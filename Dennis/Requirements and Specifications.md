@@ -28,4 +28,4 @@ There is a display of the most commonly used tools. The feature will be in the f
 
 There is a feature to create an account and log in. It will use a database to store credentials and handle authentication. It will also use hashing algorithms to store passwords on the database securely. 
 
- uses
+
