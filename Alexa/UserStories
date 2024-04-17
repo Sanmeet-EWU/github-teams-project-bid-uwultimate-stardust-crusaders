@@ -24,21 +24,24 @@ When we look in our database
 Then we should have 100 user logins. 
 
 As a customer, I would like a component to display my network’s topology. 
-
 Assumptions and Details:
+-We will scan using NMAP and visualize and display the output for the user.
+-One of the first things our tool does. 
 
 
 Acceptance Criteria:
-Given
-And
-When
-Then
+Given some network information
+And the NMAP framework
+When our tool maps out the topology
+Then it will be displayed in a visualized format. 
 
 As a business owner, I want to be able to scan multiple subnets with this tool to cover all of my bases. 
 Assumptions and Details:
+- We will gather information from the user to scan all possible subnets
+- NIST, MITRE and Metasploit will be used.  
 
 Acceptance Criteria:
-Given
-And
-When
-Then
+Given a businesses' subnets
+And our programs use of frameworks
+When they want to see vulnerable ports 
+Then our program will provided that output 
