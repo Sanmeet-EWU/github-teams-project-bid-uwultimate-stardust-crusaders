@@ -2,35 +2,39 @@
 User Stories
 
 As a customer, I would like a user interface to interact with the program easily and obscure details. 
-
 Assumptions and Details:
+-We will have a GUI with menus and comprehensive prompts and output.
+-We will use Tkinter and subnetting to achieve this. 
 
 Acceptance Criteria:
-Given
-And
-When
-Then
+Given a GUI with a menu of options
+And a user deciding what to test
+When they choose an option
+Then our GUI program will display desired information. 
 
 As a user of this tool, I would like a login system to keep track of my information.
-
 Assumptions and Details:
+- We possibly will have a database to store credentials.
+- We maintain and store credentials and password hashes. 
 
 Acceptance Criteria:
-Given
-And
-When
-Then
+Given 100 users in our system 
+And they all login to our GUI
+When we look in our database
+Then we should have 100 user logins. 
+
 As a customer, I would like a component to display my network’s topology. 
 
 Assumptions and Details:
 
+
 Acceptance Criteria:
 Given
 And
 When
 Then
-As a business owner, I want to be able to scan multiple subnets with this tool to cover all of my bases. 
 
+As a business owner, I want to be able to scan multiple subnets with this tool to cover all of my bases. 
 Assumptions and Details:
 
 Acceptance Criteria:
