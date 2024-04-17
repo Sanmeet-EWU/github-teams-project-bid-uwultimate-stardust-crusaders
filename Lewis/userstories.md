@@ -1,3 +1,5 @@
+# User Stories
+
 As an Information Security Lead  
 I need to test the orgnaization's passwords    
 So that I can identify Attack Vectors  
@@ -58,3 +60,7 @@ Given a list of password hashes
 And the passwords are cracked and timed  
 When I upload the list  
 Then I should receive a graph displaying the data  
+
+# Glossary
+
+IAM: Identity Access Management  
