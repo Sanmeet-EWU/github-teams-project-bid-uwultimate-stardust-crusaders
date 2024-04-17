@@ -1,4 +1,4 @@
-RequirementThere must be a feature that There must be a feature that will test the organization’s passwords. The feature will use the provided password hashes and will attempt cracking them using a common wordlist. 
+There must be a feature that There must be a feature that will test the organization’s passwords. The feature will use the provided password hashes and will attempt cracking them using a common wordlist. 
 
  
 
