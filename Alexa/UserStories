@@ -7,6 +7,13 @@ Network Topology
 
 
 As a customer, I would like a user interface to interact with the program easily and obscure details. 
+Assumptions and Details:
+
+Acceptance Criteria:
+Given
+And
+Then
+When
 As a user of this tool, I would like a login system to keep track of my information.
 As a customer, I would like a component to display my network’s topology. 
 As a business owner, I want to be able to scan multiple subnets with this tool to cover all of my bases. 
