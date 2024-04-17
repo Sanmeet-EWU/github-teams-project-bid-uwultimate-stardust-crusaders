@@ -4,8 +4,8 @@ So that I can identify Attack Vectors
 
 Assumptions and Details  
 
-* We have access to everyone password hash  
-* We are testing again common word list  
+* We have access to everyone password hash
+* We are testing again common word list
 
 Acceptance Critieria:   
 Given there are 100 employees in Active Directory  
@@ -20,7 +20,7 @@ So that I can send it to the password cracking team
 
 Assumptions and Details    
 
-* The hashes will be commonly identifiable hashes  
+* The hashes will be commonly identifiable hashes
 
 Acceptance Criteria:
 Given a password hash   
@@ -33,8 +33,9 @@ I need to identify my vulnerable machines
 So that I can prevent remote access  
 
 Assumptions and Details  
-* I will only be able to exploit known exploits  
-* It will either pass or fail  
+
+* I will only be able to exploit known exploits
+* It will either pass or fail
 
 Acceptance Criteria:  
 Given a virtual machine  
@@ -42,4 +43,18 @@ And virtual machine is on the same network
 When I test the machine  
 Then I should either be given access or fail  
 
+As a IAM manager  
+I need to display times of password cracking  
+So that I can present the data in an audit  
 
+Assumptions and Details:
+
+* Passwords are already cracked
+* Types are already known
+* Times are included in list
+
+Acceptance Criteria:  
+Given a list of password hashes  
+And the passwords are cracked and timed  
+When I upload the list  
+Then I should receive a graph displaying the data  
