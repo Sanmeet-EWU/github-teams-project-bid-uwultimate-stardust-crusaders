@@ -1,15 +1,15 @@
 # User Stories
 
 As an Information Security Lead  
-I need to test the orgnaization's passwords    
+I need to test the organization's passwords    
 So that I can identify Attack Vectors  
 
 Assumptions and Details  
 
 * We have access to everyone password hash
-* We are testing again common word list
+* We are testing against common word list
 
-Acceptance Critieria:   
+Acceptance Criteria:   
 Given there are 100 employees in Active Directory  
 And Security Operations have agreed to give us access    
 When I request passwords  
