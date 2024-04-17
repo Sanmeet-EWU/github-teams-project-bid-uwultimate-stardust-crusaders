@@ -34,3 +34,15 @@ There is a feature to display given networks topology. It will take a network ad
 There is a feature that scans multiple subnets. It will display multiple fields where network addresses can go, and it will scan them all one by one. 
 
 
+Glossary for this section: 
+
+ 
+
+GUI – graphical user interface, a way for user to interact with the app by manipulating graphical elements such as icons, buttons, sliders and menus. 
+
+ 
+
+CIDR notation – a way to represent IP address and a suffix of the network (ex. 192.168.1.1/24) 
+
+ 
+
