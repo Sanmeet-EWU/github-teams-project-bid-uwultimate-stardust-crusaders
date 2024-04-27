@@ -8,7 +8,7 @@ scan_ip()
 
 class Port_Scanner {
 ports : int []
-scan_flag : string
+scan_flag : String
 ip : IP
 scan_ports()
 os_detection()
@@ -36,12 +36,9 @@ Machine *-- IP
 Network_Topology *-- Machine
 Machine *-- Vulnerabilities
 Exploit *-- Machine
-class Hashes {
-identify_hashes()
-crack_hashes()
-time_to_crack()
-display_times()
-}
+UI *-- Network_Topology
+UI *-- IP_Scanner
+UI *-- Port_Scanner
 
 class Vulnerabilities {
 vulnerabilites : String []
@@ -53,10 +50,28 @@ delete_vulnerability()
 
 class Exploit {
 machines: Machine []
-exploit()
+exploit_list()
+add_exploit()
+delete_exploit()
+find_exploit()
+run_exploit()
+
 }
 
 
+
+class UI {
+tabs : Widgets
+topologies : Network_Topology []
+ip_scanner : IP_Scanner
+port_scanner : Port_Scanner
+exploit : Exploit
+show_vulnerabilities()
+displays_topology()
+run_scans()
+save_to_file_pdf()
+run_exploit()
+}
 @enduml
 
 
