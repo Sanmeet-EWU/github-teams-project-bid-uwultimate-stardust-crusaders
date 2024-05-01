@@ -27,25 +27,22 @@ display_topology()
 class Machine {
 ip : IP
 os : String
-vulnerabilities: Vulnerabilities
+vulnerabilities: String []
 }
 
-IP_Scanner *-- IP
-Port_Scanner *--IP
-Machine *-- IP
-Network_Topology *-- Machine
-Machine *-- Vulnerabilities
-Exploit *-- Machine
-UI *-- Network_Topology
-UI *-- IP_Scanner
-UI *-- Port_Scanner
+IP_Scanner o-- IP
+Port_Scanner o--IP
+Machine o-- IP
+Network_Topology o-- Machine
+Machine o-- Vulnerabilities
+Exploit o-- Machine
+UI o-- Network_Topology
+UI o-- IP_Scanner
+UI o-- Port_Scanner
 
 class Vulnerabilities {
-vulnerabilites : String []
 identify_vulnerability()
 add_vulnerability()
-delete_vulnerability()
-
 }
 
 class Exploit {
