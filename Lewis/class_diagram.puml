@@ -28,30 +28,22 @@ class Machine {
 ip : IP
 os : String
 vulnerabilities: String []
+add_vulnerability()
 }
 
 IP_Scanner o-- IP
 Port_Scanner o--IP
 Machine o-- IP
 Network_Topology o-- Machine
-Machine o-- Vulnerabilities
-Exploit o-- Machine
 UI o-- Network_Topology
 UI o-- IP_Scanner
 UI o-- Port_Scanner
+UI o-- Pen_Tester
 
-class Vulnerabilities {
-identify_vulnerability()
-add_vulnerability()
-}
 
-class Exploit {
-machines: Machine []
-exploit_list()
-add_exploit()
-delete_exploit()
-find_exploit()
-run_exploit()
+class Pen_Tester {
+exploit_functions : Function * []
+run_exploits()
 
 }
 
