@@ -18,7 +18,7 @@ class Pen_Tester:
             with ftplib.FTP(str(host)) as ftp:
                 print("IM TRYING TO LOG IN")
                 ftp.login()  
-                print("Login successful!")
+                print("YOU HAVE BEEN HACKED!")
                 return True
         except ftplib.all_errors as e:
             print(f"Failed to connect or login: {e}")

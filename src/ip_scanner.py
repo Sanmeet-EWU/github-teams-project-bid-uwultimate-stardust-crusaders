@@ -46,16 +46,17 @@ class IPScanner:
         
         ip_range = f"{self.start_ip}/{self.subnet_mask}"
         results = self.ip_scanner.scan(hosts=ip_range, arguments='-sn')
-        alive_host = []
+        alive_host = ""
 
         scan_data = results['scan']
-
+        print(json.dumps(scan_data, indent=4))
         for host, details in scan_data.items():
             if details['status']['state'] == 'up':
-                alive_host.append(details['addresses']['ipv4'])
+                alive_host += (details['addresses']['ipv4'] + " is up \r\n")
+                #alive_host.append(details['addresses']['ipv4'])
                 print(f"Host {details['addresses']['ipv4']} is up")
 
-            return alive_host
+        return alive_host
 
 
     def scan_range(self):
@@ -63,13 +64,14 @@ class IPScanner:
         octets = self.end_ip.split(".")
         ip_range = self.start_ip + "-" + octets[-1]
         
-        alive_host = []
+        alive_host = ""
 
         results = self.ip_scanner.scan(hosts=ip_range, arguments='-sn')
         
         for host, details in scan_data.items():
+            print(details)
             if details['status']['state'] == 'up':
-                alive_host.append(details['addresses']['ipv4'])
+                alive_host += details['addresses']['ipv4'] + "\n"
                 print(f"Host {details['addresses']['ipv4']} is up")
 
         return alive_host
