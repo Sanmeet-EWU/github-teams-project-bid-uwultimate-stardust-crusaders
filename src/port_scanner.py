@@ -40,6 +40,5 @@ class PortScanner:
         return open_ports
 
     def print_scan_data(self):
-            return
-        print(json.dumps(self.scan_data, indent=4))
+            return print(json.dumps(self.scan_data, indent=4))
 
