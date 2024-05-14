@@ -30,6 +30,12 @@ class PortScanner:
             raise ValueError("Host not set")
 
         self.scan_data = self.port_scanner.scan(hosts=self.host, ports=f"{start_port}-{end_port}", arguments='-Pn')
+        # tcp udp syn flag section 
+        # return OS and services !! needs to be fixed 
+        #add different flags check for tcp udp, use fingerprint grabbing
+        #grab info from services, theres a flag in nmap that does this 
+        #research nmap flags
+        
 
         open_ports = []
         for host in self.scan_data['scan']:
