@@ -35,16 +35,16 @@ class GraphNode(QGraphicsEllipseItem):
 
 
     def mousePressEvent(self, event):
-        '''TODO
-        Link generate report to this button
-        Do we make a pop up what we do?
-        '''
         print(f"Node {self.label} clicked")
         if event.button() == event.buttons().LeftButton:
             self.show_security_report()
         super().mousePressEvent(event)
     
     def show_security_report(self):
+        '''
+        Might need some pretty edits temp code till I get the data types needed
+        '''
+
         dialog = QDialog()
         dialog.setWindowTitle("Security Report")
         layout = QVBoxLayout()
