@@ -15,7 +15,7 @@ class PortScanner:
 
     def set_port_range(self, port_range):
         if re.match(r"all", port_range, re.IGNORECASE):
-            return 1, 65535  # Represents the full range of ports.
+            return 1, 65535
         else:
             match = re.match(r"(\d+)\s*-\s*(\d+)", port_range)
             if match:
@@ -64,4 +64,4 @@ class PortScanner:
         else:
             print("No scan data available")
 
-    #need to add main for a demo - will do this soon
+    #need to add main for a demo - will do this soon!!!
