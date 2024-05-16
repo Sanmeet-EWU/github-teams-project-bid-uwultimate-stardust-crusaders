@@ -2,8 +2,9 @@ import nmap
 import json
 import re
 
+
 class PortScanner:
-    
+
     def __init__(self):
         self.port_scanner = nmap.PortScanner()
         self.host = None
@@ -14,8 +15,8 @@ class PortScanner:
 
     def set_port_range(self, port_range):
         if re.match(r"all", port_range, re.IGNORECASE):
-            return 1, 65535
-        else
+            return 1, 65535  # Represents the full range of ports.
+        else:
             match = re.match(r"(\d+)\s*-\s*(\d+)", port_range)
             if match:
                 start_port, end_port = map(int, match.groups())
@@ -25,26 +26,42 @@ class PortScanner:
             else:
                 raise ValueError("Invalid port range format")
 
-    def scan_ports(self, start_port, end_port):
+    def scan_ports(self, start_port=None, end_port=None):
         if self.host is None:
             raise ValueError("Host not set")
 
-        self.scan_data = self.port_scanner.scan(hosts=self.host, ports=f"{start_port}-{end_port}", arguments='-Pn')
-        # tcp udp syn flag section 
-        # return OS and services !! needs to be fixed 
-        #add different flags check for tcp udp, use fingerprint grabbing
-        #grab info from services, theres a flag in nmap that does this 
-        #research nmap flags
-        
+        port_range = f"{start_port}-{end_port}" if start_port and end_port else ""
 
-        open_ports = []
-        for host in self.scan_data['scan']:
-            for proto in self.scan_data['scan'][host]['tcp']:
-                if self.scan_data['scan'][host]['tcp'][proto]['state'] == 'open':
-                    open_ports.append(proto)
+        arguments = "-sS -sU -A -O -sV --version-intensity 5 --script=default --osscan-guess -Pn"
 
-        return open_ports
+        self.scan_data = self.port_scanner.scan(hosts=self.host, ports=port_range, arguments=arguments)
+
+        return self.analyze_scan_results()
+
+    def analyze_scan_results(self):
+        results = []
+        if self.scan_data:
+            for host in self.scan_data['scan']:
+                host_info = {'host': host}
+                for proto in self.scan_data['scan'][host]:
+                    host_info[proto] = []
+                    for port in self.scan_data['scan'][host][proto]:
+                        port_info = self.scan_data['scan'][host][proto][port]
+                        host_info[proto].append({
+                            'port': port,
+                            'state': port_info['state'],
+                            'service': port_info.get('name', ''),
+                            'product': port_info.get('product', ''),
+                            'version': port_info.get('version', ''),
+                            'os': self.scan_data['scan'][host].get('osmatch', [])
+                        })
+                results.append(host_info)
+        return results
 
     def print_scan_data(self):
-            return print(json.dumps(self.scan_data, indent=4))
+        if self.scan_data:
+            print(json.dumps(self.scan_data, indent=4))
+        else:
+            print("No scan data available")
 
+    #need to add main for a demo - will do this soon
