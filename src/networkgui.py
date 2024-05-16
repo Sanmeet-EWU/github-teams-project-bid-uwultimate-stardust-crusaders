@@ -3,19 +3,16 @@ import networkx as nx
 from PyQt6.QtWidgets import QApplication, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip
 from PyQt6.QtCore import QRectF, QPointF, QTimer
 from PyQt6.QtGui import QBrush, QColor, QPen
+from Machine import *
 
 
 class GraphNode(QGraphicsEllipseItem):
-    ''' TODO
-    1. add machine in as an input to associate it to a note
-    2. set colors based off machine value.
-    3. set labels based on machine tostring
-    '''
-    def __init__(self, label, x, y):
+
+    def __init__(self, machine, x, y):
         super().__init__(QRectF(x - 55, y - 55, 110, 110))  # Center the ellipse on the coordinates
         # Need to edit this to reflect the hover menu
-        self.label = label
-        self.setBrush(QBrush(QColor(138, 3, 3)))
+        self.label = str(machine.IP)
+        self.setBrush(QBrush(QColor(machine.color[0],machine.color[1],machine.color[2])))
         self.setFlags(QGraphicsEllipseItem.GraphicsItemFlag.ItemIsSelectable |
                         QGraphicsEllipseItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
@@ -71,7 +68,7 @@ class GraphWindow(QWidget):
         1. Incorporate machines in here.
         2. do we need a get from the topology class
         '''
-
+        # Mock array for machines.
         nxG = nx.complete_graph(num_nodes)
         # Edit scale for spacing of buttons
         pos = nx.spring_layout(nxG, scale=600)
@@ -89,7 +86,8 @@ class GraphWindow(QWidget):
             # Get coordinates of the graph
             x, y = pos[node]
             # Need to add the machine in this constructor
-            node_item = GraphNode(f"127.0.0.{node + 1}", x, y)  
+            machine = Machine(f"127.0.0.{node+1}")
+            node_item = GraphNode(machine, x, y)  
             self.scene.addItem(node_item)
 
 

@@ -7,13 +7,14 @@ class Machine:
         self.OS = OS
         self.vulnerabilities = []
         self.security_rating = 0
-        
+        self.color = (199,36,177)        
+
     def add_vulnerability(self, vulnerability):
         self.vulnerabilities.append(vulnerability)
 
     def generate_report(self) -> str:
-    '''
-    I need some vulnerability report here to return a string and rating. 
-    This will be called when you click on the map in network topology.
-    '''
+        '''
+        I need some vulnerability report here to return a string and rating. 
+        This will be called when you click on the map in network topology.
+        '''
         return "This machine is vulnerable"
