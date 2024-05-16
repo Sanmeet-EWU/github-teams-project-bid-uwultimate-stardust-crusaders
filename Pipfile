@@ -1,0 +1,13 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+python-nmap = "==0.7.1"
+pyqt6 = "==6.7.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
