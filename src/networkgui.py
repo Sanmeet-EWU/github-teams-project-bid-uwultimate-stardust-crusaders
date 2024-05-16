@@ -1,6 +1,6 @@
 import sys
 import networkx as nx
-from PyQt6.QtWidgets import QApplication, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip
+from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip
 from PyQt6.QtCore import QRectF, QPointF, QTimer
 from PyQt6.QtGui import QBrush, QColor, QPen
 from Machine import *
@@ -16,6 +16,7 @@ class GraphNode(QGraphicsEllipseItem):
         self.setFlags(QGraphicsEllipseItem.GraphicsItemFlag.ItemIsSelectable |
                         QGraphicsEllipseItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
+        self.machine = machine
 
         
     def hoverEnterEvent(self, event):
@@ -39,7 +40,20 @@ class GraphNode(QGraphicsEllipseItem):
         Do we make a pop up what we do?
         '''
         print(f"Node {self.label} clicked")
+        if event.button() == event.buttons().LeftButton:
+            self.show_security_report()
         super().mousePressEvent(event)
+    
+    def show_security_report(self):
+        dialog = QDialog()
+        dialog.setWindowTitle("Security Report")
+        layout = QVBoxLayout()
+        report = self.machine.generate_report()
+        report_label = QLabel(report)
+        layout.addWidget(report_label)
+        dialog.setLayout(layout)
+        dialog.resize(400, 300)
+        dialog.exec()
 
 class GraphWindow(QWidget):
     '''
