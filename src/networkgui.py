@@ -75,7 +75,7 @@ class GraphWindow(QWidget):
 
         # Displays the graph. Function takes the node.
         # Maybe the topology class should be passed in?
-        self.display_graph(20)
+        self.display_graph(10)
 
     def display_graph(self, num_nodes):
         ''' TODO
