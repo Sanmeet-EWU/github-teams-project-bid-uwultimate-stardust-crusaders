@@ -1,24 +1,22 @@
 import sys
 import networkx as nx
-from PyQt6.QtWidgets import QApplication, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip
+from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip
 from PyQt6.QtCore import QRectF, QPointF, QTimer
 from PyQt6.QtGui import QBrush, QColor, QPen
+from Machine import *
 
 
 class GraphNode(QGraphicsEllipseItem):
-    ''' TODO
-    1. add machine in as an input to associate it to a note
-    2. set colors based off machine value.
-    3. set labels based on machine tostring
-    '''
-    def __init__(self, label, x, y):
+
+    def __init__(self, machine, x, y):
         super().__init__(QRectF(x - 55, y - 55, 110, 110))  # Center the ellipse on the coordinates
         # Need to edit this to reflect the hover menu
-        self.label = label
-        self.setBrush(QBrush(QColor(138, 3, 3)))
+        self.label = str(machine.IP)
+        self.setBrush(QBrush(QColor(machine.color[0],machine.color[1],machine.color[2])))
         self.setFlags(QGraphicsEllipseItem.GraphicsItemFlag.ItemIsSelectable |
                         QGraphicsEllipseItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
+        self.machine = machine
 
         
     def hoverEnterEvent(self, event):
@@ -37,12 +35,25 @@ class GraphNode(QGraphicsEllipseItem):
 
 
     def mousePressEvent(self, event):
-        '''TODO
-        Link generate report to this button
-        Do we make a pop up what we do?
-        '''
         print(f"Node {self.label} clicked")
+        if event.button() == event.buttons().LeftButton:
+            self.show_security_report()
         super().mousePressEvent(event)
+    
+    def show_security_report(self):
+        '''
+        Might need some pretty edits temp code till I get the data types needed
+        '''
+
+        dialog = QDialog()
+        dialog.setWindowTitle("Security Report")
+        layout = QVBoxLayout()
+        report = self.machine.generate_report()
+        report_label = QLabel(report)
+        layout.addWidget(report_label)
+        dialog.setLayout(layout)
+        dialog.resize(400, 300)
+        dialog.exec()
 
 class GraphWindow(QWidget):
     '''
@@ -64,14 +75,14 @@ class GraphWindow(QWidget):
 
         # Displays the graph. Function takes the node.
         # Maybe the topology class should be passed in?
-        self.display_graph(20)
+        self.display_graph(10)
 
     def display_graph(self, num_nodes):
         ''' TODO
         1. Incorporate machines in here.
         2. do we need a get from the topology class
         '''
-
+        # Mock array for machines.
         nxG = nx.complete_graph(num_nodes)
         # Edit scale for spacing of buttons
         pos = nx.spring_layout(nxG, scale=600)
@@ -89,7 +100,8 @@ class GraphWindow(QWidget):
             # Get coordinates of the graph
             x, y = pos[node]
             # Need to add the machine in this constructor
-            node_item = GraphNode(f"127.0.0.{node + 1}", x, y)  
+            machine = Machine(f"127.0.0.{node+1}")
+            node_item = GraphNode(machine, x, y)  
             self.scene.addItem(node_item)
 
 
