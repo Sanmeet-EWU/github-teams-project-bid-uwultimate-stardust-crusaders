@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: scanmaster-x
+Version: 0.0.0
+Requires-Dist: python-nmap==0.7.1
+Requires-Dist: pyqt6==6.7.0
+Requires-Dist: netifaces==0.11.0
+Requires-Dist: requests==2.31.0

@@ -12,8 +12,8 @@ class Machine:
         self.vulnerabilities.append(vulnerability)
 
     def generate_report(self) -> str:
-    '''
-    I need some vulnerability report here to return a string and rating. 
-    This will be called when you click on the map in network topology.
-    '''
+        '''
+        I need some vulnerability report here to return a string and rating. 
+        This will be called when you click on the map in network topology.
+        '''
         return "This machine is vulnerable"
