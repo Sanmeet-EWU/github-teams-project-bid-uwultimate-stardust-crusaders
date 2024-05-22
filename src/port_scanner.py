@@ -1,6 +1,7 @@
 import subprocess
 import re
-
+import json
+from datetime import datetime
 
 class PortScanner:
 
@@ -34,7 +35,7 @@ class PortScanner:
         port_option = self.set_port_range(port_range)
 
         arguments = f"sudo nmap {self.host} {port_option} -sS -sU -A -O -sV --version-intensity 5 --osscan-guess -Pn"
-        print(f"Running command: {arguments}") #can be removed 
+        print(f"Running command: {arguments}")
 
         try:
             completed_process = subprocess.run(arguments.split(), capture_output=True, text=True, check=True)
@@ -47,25 +48,27 @@ class PortScanner:
 
         return self.raw_output
 
+    def save_scan_data(self):
+        file_name = f"nmap_scan_{self.host}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        with open(file_name, 'w') as f:
+            f.write(self.raw_output)
+        print(f"Scan data saved to {file_name}")
+
     def print_scan_data(self):
         if self.raw_output:
-            print("Raw nmap Output:")
-            print(self.raw_output)
-            if self.error_output:
-                print("\nError Output:")
-                print(self.error_output)
+            print("Scan Results:")
+            print(json.dumps(self.raw_output.splitlines(), indent=4))
+            self.save_scan_data()
         else:
             print("No scan data available")
-
 
 def main():
     scanner = PortScanner()
     scanner.set_host("127.0.0.1")
-    #demo main for testing purposes - works on my local host
-    #right now it just prints the whole scan output. next thing is formatting and parsing it to make it look pretty and extraxt/save information for cve stuff
+    #demo main for testing purposes- hard coded for local host
+    #right now it prints the whole scan output. next thing is formatting & parsing it to make it look pretty and extract/save info for cve stuff
 
-    port_range = input(
-        "Enter port range (e.g., '1-100', 'all') or press Enter to scan the 1000 most common ports: ") or None
+    port_range = input("Enter port range (e.g., '1-100', 'all') or press Enter to scan the 1000 most common ports: ") or None
 
     try:
         scan_results = scanner.scan_ports(port_range)
