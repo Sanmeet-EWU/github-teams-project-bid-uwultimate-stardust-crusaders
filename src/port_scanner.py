@@ -1,7 +1,30 @@
+"""Module containing port scanning related classes and methods."""
+
 import subprocess
 import re
 import json
 from datetime import datetime
+from typing import TypedDict
+
+import nmap
+
+
+class NmapServiceData(TypedDict):
+    """Type for parsed nmap data for individual services."""
+    cpe: str
+    title: str
+
+
+class NmapOSData(TypedDict):
+    """Type for parsed nmap data for an OS."""
+    cpe: str
+
+
+class NmapPortData(TypedDict):
+    """Type for parsed nmap data for individual ports."""
+    services: tuple[NmapServiceData]
+    os: NmapOSData
+
 
 class PortScanner:
 
@@ -9,6 +32,7 @@ class PortScanner:
         self.host = None
         self.raw_output = None
         self.error_output = None
+        self.scanner = nmap.PortScanner()
 
     def set_host(self, host):
         self.host = host
@@ -34,19 +58,30 @@ class PortScanner:
 
         port_option = self.set_port_range(port_range)
 
-        arguments = f"sudo nmap {self.host} {port_option} -sS -sU -A -O -sV --version-intensity 5 --osscan-guess -Pn"
-        print(f"Running command: {arguments}")
-
-        try:
-            completed_process = subprocess.run(arguments.split(), capture_output=True, text=True, check=True)
-            self.raw_output = completed_process.stdout
-            self.error_output = completed_process.stderr
-        except subprocess.CalledProcessError as e:
-            print(f"An error occurred during scanning: {e}")
-            self.raw_output = e.stdout
-            self.error_output = e.stderr
+        self.raw_output = self.scanner.scan(
+            hosts=self.host,
+            ports='1-1000',
+            arguments='-sS -sU -A -O -sV')
 
         return self.raw_output
+
+    def _parse_scan_data(
+            self,
+            raw_data: dict) -> dict[int, NmapPortData]:
+        """Parse the raw scan data into a usable form.
+
+        Args:
+            raw_data (object):
+                A JSON dictionary containing the parsed data
+                from a nmap scan.
+
+        Returns:
+            dict[int, NmapPortData]]:
+                A dictionary containing relevant nmap data for
+                each every port on a given host.
+        """
+        
+        return None
 
     def save_scan_data(self):
         file_name = f"nmap_scan_{self.host}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
@@ -70,14 +105,11 @@ def main():
 
     port_range = input("Enter port range (e.g., '1-100', 'all') or press Enter to scan the 1000 most common ports: ") or None
 
-    try:
-        scan_results = scanner.scan_ports(port_range)
-        if scan_results:
-            scanner.print_scan_data()
-        else:
-            print("No results found.")
-    except Exception as e:
-        print(f"An error occurred during scanning: {e}")
+    scan_results = scanner.scan_ports(port_range)
+    if scan_results:
+        scanner.print_scan_data()
+    else:
+        print("No results found.")
 
 
 if __name__ == "__main__":

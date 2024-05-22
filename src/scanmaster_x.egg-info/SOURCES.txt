@@ -14,5 +14,6 @@ vulnerability_lookup/limitters/abc_limitter.py
 vulnerability_lookup/limitters/no_limit.py
 vulnerability_lookup/limitters/throttle.py
 vulnerability_lookup/test/__init__.py
-vulnerability_lookup/test/ft_cpe_api.py
-vulnerability_lookup/test/ft_nvd_api.py
+vulnerability_lookup/test/ft_cpe.py
+vulnerability_lookup/test/ft_cve.py
+vulnerability_lookup/test/ft_nvd.py
