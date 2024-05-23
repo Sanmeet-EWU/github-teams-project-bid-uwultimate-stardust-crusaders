@@ -1,15 +1,16 @@
 import sys
+import random
 import networkx as nx
-from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip
-from PyQt6.QtCore import QRectF, QPointF, QTimer
-from PyQt6.QtGui import QBrush, QColor, QPen
+from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip, QGraphicsPixmapItem
+from PyQt6.QtCore import QRectF, QPointF, QTimer, Qt
+from PyQt6.QtGui import QBrush, QColor, QPen, QPixmap
 from Machine import *
 
 
 class GraphNode(QGraphicsEllipseItem):
 
     def __init__(self, machine, x, y):
-        super().__init__(QRectF(x - 55, y - 55, 110, 110))  # Center the ellipse on the coordinates
+        super().__init__(QRectF(x - 30, y - 30, 60, 60))  # Center the ellipse on the coordinates
         # Need to edit this to reflect the hover menu
         self.label = str(machine.IP)
         self.setBrush(QBrush(QColor(machine.color[0],machine.color[1],machine.color[2])))
@@ -17,15 +18,20 @@ class GraphNode(QGraphicsEllipseItem):
                         QGraphicsEllipseItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
         self.machine = machine
+        os_choice = random.choice(["windows.png", "Tux.png"])
+        print(os_choice)
+        original_pixmap = QPixmap(str(os_choice))
+        scaled_pixmap = original_pixmap.scaled(30, 30, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
 
-        
+        # Add the scaled image over the node
+        self.image_item = QGraphicsPixmapItem(scaled_pixmap, self)
+        self.image_item.setPos(x - scaled_pixmap.width() / 2, y - scaled_pixmap.height() / 2)  # Center the image at (x, y)
     def hoverEnterEvent(self, event):
         ''' 
         Function to show label over node
         '''
         QToolTip.showText(event.screenPos(), self.label)
         super().hoverEnterEvent(event)
-
     def hoverLeaveEvent(self, event):
         '''
         Clean up function to remove label
@@ -75,7 +81,7 @@ class GraphWindow(QWidget):
 
         # Displays the graph. Function takes the node.
         # Maybe the topology class should be passed in?
-        self.display_graph(10)
+        self.display_graph(5)
 
     def display_graph(self, num_nodes):
         ''' TODO
@@ -85,7 +91,7 @@ class GraphWindow(QWidget):
         # Mock array for machines.
         nxG = nx.complete_graph(num_nodes)
         # Edit scale for spacing of buttons
-        pos = nx.spring_layout(nxG, scale=600)
+        pos = nx.spring_layout(nxG, scale=200)
 
         # Create nodes and add to scene
         for edge in nxG.edges:

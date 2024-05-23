@@ -1,5 +1,12 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QHeaderView, QTabWidget
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
+    QPushButton, QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QHeaderView,
+    QTabWidget
+)
+from PyQt6.QtCore import Qt
+
+from networkgui import *
 
 class ScanMasterX(QMainWindow):
     def __init__(self):
@@ -52,7 +59,7 @@ class ScanMasterX(QMainWindow):
         result_table.setItem(3, 1, QTableWidgetItem("123"))
         result_table.setItem(3, 2, QTableWidgetItem("5300"))
 
-        result_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        result_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         scan_layout.addWidget(result_table)
 
         tab_widget.addTab(scan_tab, "Scan")
@@ -62,16 +69,21 @@ class ScanMasterX(QMainWindow):
         display_topology_layout = QVBoxLayout()
         display_topology_tab.setLayout(display_topology_layout)
         # Add content to Display Topology Tab as needed
-        display_topology_layout.addWidget(QLabel("Display Topology content goes here"))
+        display_topology_layout.addWidget(QLabel("Network Topology"))
+        
+        display_topology_layout.addWidget(GraphWindow())
+        # Assuming GraphWindow is a valid widget, you need to import it correctly
+        # display_topology_layout.addWidget(GraphWindow())
+        
         tab_widget.addTab(display_topology_tab, "Display Topology")
 
         # Exploit Tab
-        exploit_tab = QWidget()
-        exploit_layout = QVBoxLayout()
-        exploit_tab.setLayout(exploit_layout)
-       
-        exploit_layout.addWidget(QLabel("Exploit content goes here"))
-        tab_widget.addTab(exploit_tab, "Exploit")
+        # exploit_tab = QWidget()
+        # exploit_layout = QVBoxLayout()
+        # exploit_tab.setLayout(exploit_layout)
+
+        # exploit_layout.addWidget(QLabel("Exploit content goes here"))
+        # tab_widget.addTab(exploit_tab, "Exploit")
 
         # Set main layout
         container = QWidget()
@@ -82,7 +94,8 @@ def main():
     app = QApplication(sys.argv)
     window = ScanMasterX()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()
+
