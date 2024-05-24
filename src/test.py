@@ -1,21 +1,23 @@
 import sys
-from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
-    QPushButton, QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QHeaderView,
-    QTabWidget
-)
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, \
+    QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QHeaderView, QTabWidget, QStackedWidget
+from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
-
+from welcomepage import WelcomePage
 from networkgui import *
 
-class ScanMasterX(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Scan Master X")
-        self.setGeometry(100, 100, 800, 600)
 
-        # Main layout
+class MainInterface(QWidget):
+    def __init__(self, stacked_widget):
+        super().__init__()
+        self.stacked_widget = stacked_widget
         main_layout = QVBoxLayout()
+
+        back_button = QPushButton("Back to Home")
+        back_button.setMinimumSize(60, 25)
+        back_button.setStyleSheet("font-size: 12px; padding: 7px 15px;")
+        back_button.clicked.connect(self.go_to_welcome_page)
+        main_layout.addWidget(back_button)
 
         # Tabs
         tab_widget = QTabWidget()
@@ -68,13 +70,10 @@ class ScanMasterX(QMainWindow):
         display_topology_tab = QWidget()
         display_topology_layout = QVBoxLayout()
         display_topology_tab.setLayout(display_topology_layout)
-        # Add content to Display Topology Tab as needed
         display_topology_layout.addWidget(QLabel("Network Topology"))
-        
+
         display_topology_layout.addWidget(GraphWindow())
-        # Assuming GraphWindow is a valid widget, you need to import it correctly
-        # display_topology_layout.addWidget(GraphWindow())
-        
+
         tab_widget.addTab(display_topology_tab, "Display Topology")
 
         # Exploit Tab
@@ -82,13 +81,37 @@ class ScanMasterX(QMainWindow):
         # exploit_layout = QVBoxLayout()
         # exploit_tab.setLayout(exploit_layout)
 
-        # exploit_layout.addWidget(QLabel("Exploit content goes here"))
+        # exploit_layout.addWidget(QLabel("Menu for Exploit Options ex Default Credentials"))
         # tab_widget.addTab(exploit_tab, "Exploit")
+
+        self.setLayout(main_layout)
+
+    def go_to_welcome_page(self):
+        self.stacked_widget.setCurrentIndex(0)
+
+
+class ScanMasterX(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("ScanMasterX")
+        self.setGeometry(100, 100, 800, 600)
+
+        # Main layout
+        main_layout = QVBoxLayout()
+
+        # Stacked widget for switching between welcome page and main interface
+        self.stacked_widget = QStackedWidget()
+        main_layout.addWidget(self.stacked_widget)
+
+        # Add welcome page and main interface to the stacked widget
+        self.stacked_widget.addWidget(WelcomePage(self.stacked_widget))
+        self.stacked_widget.addWidget(MainInterface(self.stacked_widget))
 
         # Set main layout
         container = QWidget()
         container.setLayout(main_layout)
         self.setCentralWidget(container)
+
 
 def main():
     app = QApplication(sys.argv)
@@ -96,6 +119,6 @@ def main():
     window.show()
     sys.exit(app.exec())
 
-if __name__ == "__main__":
-    main()
 
+if __name__ == '__main__':
+    main()
