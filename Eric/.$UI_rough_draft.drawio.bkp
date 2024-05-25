@@ -1,0 +1,129 @@
+<mxfile host="Electron" modified="2024-05-06T17:25:37.075Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="DFC2xF85ERR8VI4vH0Dd" version="24.2.5" type="device">
+  <diagram name="Page-1" id="03018318-947c-dd8e-b7a3-06fadd420f32">
+    <mxGraphModel dx="1593" dy="926" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="af4oEK7Usk6lk2g7xirI-20" value="ScanMaster X - IP Scan" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=8;strokeColor2=#008cff;strokeColor3=#c4c4c4;fontColor=#666666;mainText=;fontSize=17;labelBackgroundColor=none;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="40" y="40" width="330" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-13" value="192.168.30.0/24" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=#CED4DA;strokeWidth=1;fillColor=#E9ECEF;fontColor=#505050;whiteSpace=wrap;align=left;verticalAlign=middle;spacingLeft=10;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="50" y="123" width="250" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-15" value="" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.rrect;rSize=10;fillColor=#F1F2F4;strokeColor=#ffffff;strokeWidth=2" parent="1" vertex="1">
+          <mxGeometry x="45" y="73" width="320" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-16" value="Port Scan" style="rounded=0;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;html=1;" parent="af4oEK7Usk6lk2g7xirI-15" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="80" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-17" value="Topology" style="rounded=0;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;html=1;" parent="af4oEK7Usk6lk2g7xirI-15" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="160" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-18" value="Exploit" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.rightButton;rSize=10;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;" parent="af4oEK7Usk6lk2g7xirI-15" vertex="1">
+          <mxGeometry x="1" width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="-80" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-19" value="IP Scan" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.leftButton;rSize=10;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;" parent="af4oEK7Usk6lk2g7xirI-15" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-22" value="Scan" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=none;strokeWidth=1;fillColor=#0085FC;fontColor=#FFFFFF;whiteSpace=wrap;align=center;verticalAlign=middle;spacingLeft=0;fontStyle=0;fontSize=16;spacing=5;" parent="1" vertex="1">
+          <mxGeometry x="300" y="123" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-23" value="List of found IPs" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="50" y="183" width="310" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-24" value="ScanMaster X - Port Scan" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=8;strokeColor2=#008cff;strokeColor3=#c4c4c4;fontColor=#666666;mainText=;fontSize=17;labelBackgroundColor=none;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="440" y="40" width="330" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-26" value="" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.rrect;rSize=10;fillColor=#F1F2F4;strokeColor=#ffffff;strokeWidth=2" parent="1" vertex="1">
+          <mxGeometry x="445" y="73" width="320" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-27" value="Port Scan" style="rounded=0;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;html=1;" parent="af4oEK7Usk6lk2g7xirI-26" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="80" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-28" value="Topology" style="rounded=0;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;html=1;" parent="af4oEK7Usk6lk2g7xirI-26" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="160" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-29" value="Exploit" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.rightButton;rSize=10;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;" parent="af4oEK7Usk6lk2g7xirI-26" vertex="1">
+          <mxGeometry x="1" width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="-80" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-30" value="IP Scan" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.leftButton;rSize=10;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;" parent="af4oEK7Usk6lk2g7xirI-26" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-31" value="Scan" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=none;strokeWidth=1;fillColor=#0085FC;fontColor=#FFFFFF;whiteSpace=wrap;align=center;verticalAlign=middle;spacingLeft=0;fontStyle=0;fontSize=16;spacing=5;" parent="1" vertex="1">
+          <mxGeometry x="700" y="123" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-32" value="List of open ports/services" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="450" y="183" width="310" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-33" value="ScanMaster X - Exploit" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=8;strokeColor2=#008cff;strokeColor3=#c4c4c4;fontColor=#666666;mainText=;fontSize=17;labelBackgroundColor=none;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="840" y="40" width="330" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-35" value="" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.rrect;rSize=10;fillColor=#F1F2F4;strokeColor=#ffffff;strokeWidth=2" parent="1" vertex="1">
+          <mxGeometry x="845" y="73" width="320" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-36" value="Port Scan" style="rounded=0;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;html=1;" parent="af4oEK7Usk6lk2g7xirI-35" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="80" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-37" value="Topology" style="rounded=0;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;html=1;" parent="af4oEK7Usk6lk2g7xirI-35" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="160" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-38" value="Exploit" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.rightButton;rSize=10;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;" parent="af4oEK7Usk6lk2g7xirI-35" vertex="1">
+          <mxGeometry x="1" width="80" height="33" relative="1" as="geometry">
+            <mxPoint x="-80" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-39" value="IP Scan" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.leftButton;rSize=10;fontSize=12;fontColor=#596780;fontStyle=0;fillColor=none;strokeColor=#ffffff;strokeWidth=2;resizeHeight=1;whiteSpace=wrap;" parent="af4oEK7Usk6lk2g7xirI-35" vertex="1">
+          <mxGeometry width="80" height="33" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-40" value="Exploit" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=none;strokeWidth=1;fillColor=#0085FC;fontColor=#FFFFFF;whiteSpace=wrap;align=center;verticalAlign=middle;spacingLeft=0;fontStyle=0;fontSize=16;spacing=5;" parent="1" vertex="1">
+          <mxGeometry x="1100" y="123" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="af4oEK7Usk6lk2g7xirI-41" value="List output of exploit as it goes, success/failure" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="850" y="183" width="310" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="sr_4_iSAIX6MinIbNjUO-1" value="IP Addresses" style="rounded=1;fillColor=#F1F2F4;strokeColor=none;html=1;whiteSpace=wrap;fontColor=#596780;align=left;fontSize=12;spacingLeft=10;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="450" y="126.5" width="240" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="sr_4_iSAIX6MinIbNjUO-2" value="" style="shape=triangle;direction=south;fillColor=#596780;strokeColor=none;html=1;sketch=0;" vertex="1" parent="sr_4_iSAIX6MinIbNjUO-1">
+          <mxGeometry x="1" y="0.5" width="12" height="6" relative="1" as="geometry">
+            <mxPoint x="-20" y="-3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sr_4_iSAIX6MinIbNjUO-3" value="IP Addresses" style="rounded=1;fillColor=#F1F2F4;strokeColor=none;html=1;whiteSpace=wrap;fontColor=#596780;align=left;fontSize=12;spacingLeft=10;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="850" y="126.5" width="240" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="sr_4_iSAIX6MinIbNjUO-4" value="" style="shape=triangle;direction=south;fillColor=#596780;strokeColor=none;html=1;sketch=0;" vertex="1" parent="sr_4_iSAIX6MinIbNjUO-3">
+          <mxGeometry x="1" y="0.5" width="12" height="6" relative="1" as="geometry">
+            <mxPoint x="-20" y="-3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sr_4_iSAIX6MinIbNjUO-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.017;entryY=0.667;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="af4oEK7Usk6lk2g7xirI-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="293" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sr_4_iSAIX6MinIbNjUO-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.008;entryY=0.668;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="af4oEK7Usk6lk2g7xirI-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="293" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

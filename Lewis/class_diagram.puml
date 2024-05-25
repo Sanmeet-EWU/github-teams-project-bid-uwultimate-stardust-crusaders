@@ -1,0 +1,66 @@
+@startuml
+class IP_Scanner {
+subnet_mask : String
+start_ip : IP
+end_ip : IP
+scan_ip()
+}
+
+class Port_Scanner {
+ports : int []
+scan_flag : String
+ip : IP
+scan_ports()
+os_detection()
+service_detection()
+}
+
+class IP {
+ip: String
+}
+
+class Network_Topology {
+topology: Machine []
+display_topology()
+}
+
+class Machine {
+ip : IP
+os : String
+vulnerabilities: String []
+add_vulnerability()
+}
+
+IP_Scanner o-- IP
+Port_Scanner o--IP
+Machine o-- IP
+Network_Topology o-- Machine
+UI o-- Network_Topology
+UI o-- IP_Scanner
+UI o-- Port_Scanner
+UI o-- Pen_Tester
+
+
+class Pen_Tester {
+exploit_functions : Function * []
+run_exploits()
+
+}
+
+
+
+class UI {
+tabs : Widgets
+topologies : Network_Topology []
+ip_scanner : IP_Scanner
+port_scanner : Port_Scanner
+exploit : Exploit
+show_vulnerabilities()
+displays_topology()
+run_scans()
+save_to_file_pdf()
+run_exploit()
+}
+@enduml
+
+
