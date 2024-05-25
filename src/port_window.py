@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLa
 from PyQt6.QtCore import Qt
 from ip_scanner import IPScanner
 from network_topology import *
+from temp_scanner import *
 
 
 class PortOptionsWidget(QWidget):
@@ -34,30 +35,39 @@ class PortOptionsWidget(QWidget):
         target_layout.addWidget(target_input)
         target_layout.addWidget(scan_host_button)
         scan_ports_layout.addLayout(target_layout)
-        #scan_ports_layout.addWidget(service_combo)
 
         # Results Table
-        result_table = QTableWidget()
-        result_table.setRowCount(4)
-        result_table.setColumnCount(3)
-        result_table.setHorizontalHeaderLabels(["Service", "Version", "Port"])
-        result_table.setItem(0, 0, QTableWidgetItem("SSH"))
-        result_table.setItem(0, 1, QTableWidgetItem("2.0"))
-        result_table.setItem(0, 2, QTableWidgetItem("22"))
-        result_table.setItem(1, 0, QTableWidgetItem("HTTP"))
-        result_table.setItem(1, 1, QTableWidgetItem("3.3"))
-        result_table.setItem(1, 2, QTableWidgetItem("80"))
-        result_table.setItem(2, 0, QTableWidgetItem("FTP"))
-        result_table.setItem(2, 1, QTableWidgetItem("1.9"))
-        result_table.setItem(2, 2, QTableWidgetItem("21"))
-        result_table.setItem(3, 0, QTableWidgetItem("DNS"))
-        result_table.setItem(3, 1, QTableWidgetItem("123"))
-        result_table.setItem(3, 2, QTableWidgetItem("5300"))
+        self.result_table = QTableWidget()
+        self.result_table.setRowCount(4)
+        self.result_table.setColumnCount(3)
+        self.result_table.setHorizontalHeaderLabels(["Service", "Version", "Port"])
 
-        result_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        scan_ports_layout.addWidget(result_table)
+
+        self.result_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        scan_host_button.clicked.connect(lambda: self.on_scan_host_clicked(service_combo, target_input))
+        scan_ports_layout.addWidget(self.result_table)
 
         self.layout.addLayout(scan_ports_layout)
+
+    def on_scan_host_clicked(self, service_combo, target_input):
+        target_ip = target_input.text().strip()
+        if not target_ip:
+            target_ip = service_combo.currentText().strip()
+        if target_ip:
+            results = scan(target_ip)
+            if results and results['ports']:
+                self.result_table.setRowCount(0)  # Clear previous results
+                for port_info in results['ports']:
+                    row_position = self.result_table.rowCount()
+                    self.result_table.insertRow(row_position)
+                    self.result_table.setItem(row_position, 0, QTableWidgetItem(port_info['service']))
+                    self.result_table.setItem(row_position, 1, QTableWidgetItem(port_info['version']))
+                    self.result_table.setItem(row_position, 2, QTableWidgetItem(str(port_info['port'])))
+            else:
+                QMessageBox.warning(None, "Scan Error", "No open or filtered ports found.")
+        else:
+            QMessageBox.warning(None, "Input Error", "Please select a target machine or enter an IP address.")
+
 
     def update_service_combo(self, combo_box):
         combo_box.clear()
