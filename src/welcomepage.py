@@ -13,7 +13,7 @@ class WelcomePage(QWidget):
 
         # Add logo
         logo_label = QLabel()
-        logo_pixmap = QPixmap("logo.png")
+        logo_pixmap = QPixmap("../Images/logo.png")
         logo_label.setPixmap(logo_pixmap)
         logo_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(logo_label)

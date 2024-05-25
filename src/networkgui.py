@@ -4,7 +4,7 @@ import networkx as nx
 from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip, QGraphicsPixmapItem
 from PyQt6.QtCore import QRectF, QPointF, QTimer, Qt
 from PyQt6.QtGui import QBrush, QColor, QPen, QPixmap
-from Machine import *
+from machine import *
 
 
 class GraphNode(QGraphicsEllipseItem):
@@ -18,7 +18,7 @@ class GraphNode(QGraphicsEllipseItem):
                         QGraphicsEllipseItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
         self.machine = machine
-        os_choice = random.choice(["windows.png", "Tux.png"])
+        os_choice = random.choice(["../Images/windows.png", "../Images/tux.png"])
         print(os_choice)
         original_pixmap = QPixmap(str(os_choice))
         scaled_pixmap = original_pixmap.scaled(30, 30, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)

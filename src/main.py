@@ -5,6 +5,7 @@ from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
 from welcomepage import WelcomePage
 from networkgui import *
+from scan_window import *
 
 
 class MainInterface(QWidget):
@@ -30,41 +31,19 @@ class MainInterface(QWidget):
 
         # Scan Ports Dropdown
         scan_ports_combo = QComboBox()
-        scan_ports_combo.addItem("Scan Ports")
         scan_ports_combo.addItem("Scan Network")
+        scan_ports_combo.addItem("Scan Ports")
         scan_layout.addWidget(scan_ports_combo)
 
-        # Target Machine Input and Scan Host Button
-        target_layout = QHBoxLayout()
-        target_input = QLineEdit()
-        target_input.setPlaceholderText("Target Machine")
-        scan_host_button = QPushButton("Scan Host")
-        target_layout.addWidget(target_input)
-        target_layout.addWidget(scan_host_button)
-        scan_layout.addLayout(target_layout)
+        self.scan_options_widget = ScanOptionsWidget()
+        scan_layout.addWidget(self.scan_options_widget)
 
-        # Results Table
-        result_table = QTableWidget()
-        result_table.setRowCount(4)
-        result_table.setColumnCount(3)
-        result_table.setHorizontalHeaderLabels(["Service", "Version", "Port"])
-        result_table.setItem(0, 0, QTableWidgetItem("SSH"))
-        result_table.setItem(0, 1, QTableWidgetItem("2.0"))
-        result_table.setItem(0, 2, QTableWidgetItem("22"))
-        result_table.setItem(1, 0, QTableWidgetItem("HTTP"))
-        result_table.setItem(1, 1, QTableWidgetItem("3.3"))
-        result_table.setItem(1, 2, QTableWidgetItem("80"))
-        result_table.setItem(2, 0, QTableWidgetItem("FTP"))
-        result_table.setItem(2, 1, QTableWidgetItem("1.9"))
-        result_table.setItem(2, 2, QTableWidgetItem("21"))
-        result_table.setItem(3, 0, QTableWidgetItem("DNS"))
-        result_table.setItem(3, 1, QTableWidgetItem("123"))
-        result_table.setItem(3, 2, QTableWidgetItem("5300"))
-
-        result_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        scan_layout.addWidget(result_table)
+        scan_ports_combo.currentIndexChanged.connect(lambda: self.scan_options_widget.update_layout(scan_ports_combo.currentText()))
 
         tab_widget.addTab(scan_tab, "Scan")
+
+
+
 
         # Display Topology Tab
         display_topology_tab = QWidget()
