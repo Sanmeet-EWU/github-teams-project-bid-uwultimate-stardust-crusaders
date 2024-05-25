@@ -9,6 +9,7 @@ class Machine:
         self.security_rating = 0
         self.color = (99,36,177)        
         self.random_color()
+    
     def add_vulnerability(self, vulnerability):
         self.vulnerabilities.append(vulnerability)
 
@@ -18,6 +19,7 @@ class Machine:
         This will be called when you click on the map in network topology.
         '''
         return "This machine is vulnerable"
+
     def random_color(self):
         red = (255,0,0)
         orange = (255,165,0)

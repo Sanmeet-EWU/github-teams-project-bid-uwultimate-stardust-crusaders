@@ -6,11 +6,13 @@ from PyQt6.QtCore import Qt
 from welcomepage import WelcomePage
 from networkgui import *
 from scan_window import *
+from port_window import *
 
 
 class MainInterface(QWidget):
     def __init__(self, stacked_widget):
         super().__init__()
+        self.network = NetworkTopology()
         self.stacked_widget = stacked_widget
         main_layout = QVBoxLayout()
 
@@ -24,24 +26,26 @@ class MainInterface(QWidget):
         tab_widget = QTabWidget()
         main_layout.addWidget(tab_widget)
 
-        # Scan Tab
+        # Scan IP Tab
         scan_tab = QWidget()
         scan_layout = QVBoxLayout()
         scan_tab.setLayout(scan_layout)
 
         # Scan Ports Dropdown
         scan_ports_combo = QComboBox()
-        scan_ports_combo.addItem("Scan Network")
-        scan_ports_combo.addItem("Scan Ports")
-        scan_layout.addWidget(scan_ports_combo)
-
-        self.scan_options_widget = ScanOptionsWidget()
+        self.scan_options_widget = ScanOptionsWidget(self.network)
         scan_layout.addWidget(self.scan_options_widget)
+        tab_widget.addTab(scan_tab, "Scan Subnets")
 
-        scan_ports_combo.currentIndexChanged.connect(lambda: self.scan_options_widget.update_layout(scan_ports_combo.currentText()))
 
-        tab_widget.addTab(scan_tab, "Scan")
+        # Ports Tab
+        port_tab= QWidget()
+        port_layout = QVBoxLayout()
+        self.port_options_widget = PortOptionsWidget(self.network)
+        port_layout.addWidget(self.port_options_widget)
+        port_tab.setLayout(port_layout)
 
+        tab_widget.addTab(port_tab, "Scan Ports")
 
 
 
@@ -51,9 +55,11 @@ class MainInterface(QWidget):
         display_topology_tab.setLayout(display_topology_layout)
         display_topology_layout.addWidget(QLabel("Network Topology"))
 
-        display_topology_layout.addWidget(GraphWindow())
+        self.graph_window = GraphWindow(self.network)
+        display_topology_layout.addWidget(self.graph_window)
 
         tab_widget.addTab(display_topology_tab, "Display Topology")
+        tab_widget.currentChanged.connect(lambda: self.graph_window.display_graph(len(self.network.machines)))
 
         # Exploit Tab
         # exploit_tab = QWidget()

@@ -1,6 +1,6 @@
 import netifaces as ni
 import ipaddress
-from Machine import Machine
+from machine import Machine
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -10,15 +10,15 @@ class NetworkTopology:
         self.machines = {}
         self.host = None
         self.local_ips = self.retrieve_local_ips()
-    def add_machine(self, IP, OS):
+
+    def add_machine(self, IP, OS="Unknown"):
         try:
             ip = ipaddress.ip_address(IP)
 
-            if ip not in self.machines:
-                self.machines[ip] = Machine(IP, OS)
-                
+            if str(ip) not in self.machines:
+                self.machines[str(ip)] = Machine(IP, OS)
                 if str(ip) in self.local_ips:
-                    self.host = self.machines[ip]
+                    self.host = self.machines[str(ip)]
 
             else:
                 print(f"Machine with IP {IP} already exists in the topology.")
@@ -51,6 +51,4 @@ class NetworkTopology:
         return ips
 
 
-Network = NetworkTopology()
-Network.display_topology()
 

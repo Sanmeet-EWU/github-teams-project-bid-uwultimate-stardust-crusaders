@@ -34,7 +34,6 @@ class IPScanner:
         
 
     def is_valid_ip(self, ip):
-        
         try:
             ipaddress.ip_address(ip)
             return True
@@ -42,19 +41,15 @@ class IPScanner:
             return False
 
 
-    def scan_subnet(self):
-        
-        ip_range = f"{self.start_ip}/{self.subnet_mask}"
+    def scan_subnet(self,ip, subnet):
+        ip_range = f"{ip}/{subnet}"
         results = self.ip_scanner.scan(hosts=ip_range, arguments='-sn')
-        alive_host = ""
+        alive_host = []
 
         scan_data = results['scan']
-        print(json.dumps(scan_data, indent=4))
         for host, details in scan_data.items():
             if details['status']['state'] == 'up':
-                alive_host += (details['addresses']['ipv4'] + " is up \r\n")
-                #alive_host.append(details['addresses']['ipv4'])
-                print(f"Host {details['addresses']['ipv4']} is up")
+                alive_host.append(details['addresses']['ipv4'])
 
         return alive_host
 

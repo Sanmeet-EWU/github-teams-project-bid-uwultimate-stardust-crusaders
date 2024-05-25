@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsSce
 from PyQt6.QtCore import QRectF, QPointF, QTimer, Qt
 from PyQt6.QtGui import QBrush, QColor, QPen, QPixmap
 from machine import *
+from network_topology import *
 
 
 class GraphNode(QGraphicsEllipseItem):
@@ -68,9 +69,9 @@ class GraphWindow(QWidget):
     Automatic on page layout?
     '''
 
-    def __init__(self):
+    def __init__(self, network):
         super().__init__()
-
+        self.network = network
         # Layout setup
         layout = QVBoxLayout(self)
         self.graphicsView = QGraphicsView()
@@ -81,13 +82,13 @@ class GraphWindow(QWidget):
 
         # Displays the graph. Function takes the node.
         # Maybe the topology class should be passed in?
-        self.display_graph(5)
 
     def display_graph(self, num_nodes):
         ''' TODO
         1. Incorporate machines in here.
         2. do we need a get from the topology class
         '''
+        self.scene.clear()
         # Mock array for machines.
         nxG = nx.complete_graph(num_nodes)
         # Edit scale for spacing of buttons
