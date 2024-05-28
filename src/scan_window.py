@@ -23,12 +23,12 @@ class ScanOptionsWidget(QWidget):
 
         ip_label = QLabel("Enter IP Address:    ")
         ip_input = QLineEdit()
-        ip_input.setPlaceholderText("Enter IP Address")
+        ip_input.setPlaceholderText("IP Address")
         ip_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         subnet_label = QLabel("Enter Subnet Mask:")
         subnet_input = QLineEdit()
-        subnet_input.setPlaceholderText("Enter Subnet Mask")
+        subnet_input.setPlaceholderText("Subnet Mask")
         subnet_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         scan_network_button = QPushButton("Scan Network")
