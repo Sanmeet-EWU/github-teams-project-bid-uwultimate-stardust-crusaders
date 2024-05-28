@@ -44,7 +44,13 @@ class MainInterface(QWidget):
         display_topology_tab = QWidget()
         display_topology_layout = QVBoxLayout()
         display_topology_tab.setLayout(display_topology_layout)
-        display_topology_layout.addWidget(QLabel("Network Topology"))
+        network_topology_label = QLabel("Network Topology")
+        network_topology_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        network_topology_label.setStyleSheet("""
+            font-size: 16px;
+            font-weight: bold;
+        """)
+        display_topology_layout.addWidget(network_topology_label)
 
         self.graph_window = GraphWindow(self.network)
         display_topology_layout.addWidget(self.graph_window)
