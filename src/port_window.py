@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QLineEdit, \
-    QComboBox, QTableWidget, QTableWidgetItem, QHeaderView, QSizePolicy, QFormLayout, QListWidget
+    QComboBox, QTableWidget, QTableWidgetItem, QHeaderView, QSizePolicy, QFormLayout, QListWidget, QMessageBox
 from PyQt6.QtCore import Qt
 from ip_scanner import IPScanner
 from network_topology import *

@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, \
-    QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QHeaderView, QTabWidget, QStackedWidget
+    QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QHeaderView, QTabWidget, QStackedWidget, QMessageBox
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import Qt
 from welcomepage import WelcomePage
@@ -56,15 +56,7 @@ class MainInterface(QWidget):
         display_topology_layout.addWidget(self.graph_window)
 
         tab_widget.addTab(display_topology_tab, "Display Topology")
-        tab_widget.currentChanged.connect(lambda: self.graph_window.display_graph(len(self.network.machines)))
-
-        # Exploit Tab
-        # exploit_tab = QWidget()
-        # exploit_layout = QVBoxLayout()
-        # exploit_tab.setLayout(exploit_layout)
-
-        # exploit_layout.addWidget(QLabel("Menu for Exploit Options ex Default Credentials"))
-        # tab_widget.addTab(exploit_tab, "Exploit")
+        tab_widget.currentChanged.connect(self.graph_window.display_graph)
 
         main_layout.addStretch()
 

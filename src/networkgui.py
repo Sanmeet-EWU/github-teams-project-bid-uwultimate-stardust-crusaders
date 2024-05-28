@@ -82,35 +82,36 @@ class GraphWindow(QWidget):
 
         # Displays the graph. Function takes the node.
         # Maybe the topology class should be passed in?
-
-    def display_graph(self, num_nodes):
-        ''' TODO
-        1. Incorporate machines in here.
-        2. do we need a get from the topology class
+    def display_graph(self):
         '''
+        Display the network graph using the machines from self.network.machines.
+        '''
+        # Get the list of machines from the network
+        machines = list(self.network.machines.values())
+        num_nodes = len(machines)
         self.scene.clear()
-        # Mock array for machines.
+    
+        # Create a complete graph with the number of machines
         nxG = nx.complete_graph(num_nodes)
-        # Edit scale for spacing of buttons
+        # Adjust scale for spacing of nodes
         pos = nx.spring_layout(nxG, scale=200)
-
-        # Create nodes and add to scene
+    
+        # Create edges and add to the scene
         for edge in nxG.edges:
             start_pos = QPointF(*pos[edge[0]])
             end_pos = QPointF(*pos[edge[1]])
             line = QGraphicsLineItem(start_pos.x(), start_pos.y(), end_pos.x(), end_pos.y())
             # Set edge color and thickness
-            line.setPen(QPen(QColor(50, 50, 50), 2))  
+            line.setPen(QPen(QColor(50, 50, 50), 2))
             self.scene.addItem(line)
-
-        for node in nxG.nodes:
+    
+        # Create nodes and add to the scene
+        for i, machine in enumerate(machines):
             # Get coordinates of the graph
-            x, y = pos[node]
-            # Need to add the machine in this constructor
-            machine = Machine(f"127.0.0.{node+1}")
-            node_item = GraphNode(machine, x, y)  
+            x, y = pos[i]
+            # Create a GraphNode for each machine
+            node_item = GraphNode(machine, x, y)
             self.scene.addItem(node_item)
-
 
 def main():
     app = QApplication(sys.argv)
