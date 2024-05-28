@@ -11,7 +11,7 @@ class WelcomePage(QWidget):
         welcome_label = QLabel("Welcome To ScanMasterX")
         welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         welcome_label.setStyleSheet("""
-            font-size: 24px;
+            font-size: 22px;
             color: black;
             font-weight: bold;
             padding: 10px;
@@ -19,7 +19,7 @@ class WelcomePage(QWidget):
             background-color: #FFFFFF;
             border-radius: 5px;
         """)
-        welcome_label.setFixedSize(welcome_label.sizeHint().width() + 30, welcome_label.sizeHint().height() + 20)
+        welcome_label.setFixedSize(welcome_label.sizeHint().width() + 60, welcome_label.sizeHint().height() + 20)
 
         logo_label = QLabel()
         logo_pixmap = QPixmap("../Images/logo.png")
@@ -29,7 +29,7 @@ class WelcomePage(QWidget):
         start_button = QPushButton("Start")
         start_button.setMinimumSize(100, 50)
         start_button.setStyleSheet("""
-                    font-size: 18px;
+                    font-size: 20px;
                     font-weight: bold;
                     padding: 10px 20px;
                     border: 2px solid rgb(206, 41, 41);                   
