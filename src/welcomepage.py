@@ -8,18 +8,18 @@ class WelcomePage(QWidget):
         outer_layout = QVBoxLayout()
         outer_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        welcome_label = QLabel("Welcome To ScanMasterX")
-        welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        welcome_label.setStyleSheet("""
-            font-size: 24px;
-            color: black;
-            font-weight: bold;
-            padding: 10px;
-            border: 2px solid rgb(206, 41, 41);
-            background-color: #FFFFFF;
-            border-radius: 5px;
-        """)
-        welcome_label.setFixedSize(welcome_label.sizeHint().width() + 30, welcome_label.sizeHint().height() + 20)
+        welcome_button = QPushButton("Welcome To ScanMasterX")
+        welcome_button.setMinimumSize(100, 50)
+        welcome_button.setStyleSheet("""
+                            font-size: 20px;
+                            font-weight: bold;
+                            padding: 10px 20px;
+                            border: 2px solid rgb(206, 41, 41);                   
+                            border-radius: 10px;
+                            background-color: #FFFFFF;
+                            color: #000000;
+                        """)
+        welcome_button.clicked.connect(lambda: stacked_widget.setCurrentIndex(1))
 
         logo_label = QLabel()
         logo_pixmap = QPixmap("../Images/logo.png")
@@ -42,7 +42,7 @@ class WelcomePage(QWidget):
         inner_layout = QVBoxLayout()
         inner_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         inner_layout.addWidget(logo_label)
-        inner_layout.addWidget(welcome_label)
+        inner_layout.addWidget(welcome_button)
         inner_layout.addWidget(start_button)
 
         outer_layout.addLayout(inner_layout)
