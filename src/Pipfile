@@ -4,6 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-scanmaster-x = {file = "src", editable = true}
+scanmaster-x = {file = ".", editable = true}
 
 [dev-packages]
+
+[requires]
+python_version = "3.11"
