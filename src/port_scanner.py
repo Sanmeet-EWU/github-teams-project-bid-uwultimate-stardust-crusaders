@@ -40,11 +40,15 @@ class NmapDataParser:
     def __init__(self, data: object):
         self._data = data
 
-    def parse(self) -> ParsedNmapData:
+    def parse(self) -> dict[str, ParsedNmapData]:
         return {
-            'tcp': self._parse_protocol(self._data['scan'], 'tcp'),
-            'udp': self._parse_protocol(self._data['scan'], 'udp'),
-            'os': self._parse_os(self._data['scan']),
+            host:
+            {
+                'tcp': self._parse_protocol(data, 'tcp'),
+                'udp': self._parse_protocol(data, 'udp'),
+                'os': self._parse_os(data),
+            }
+            for host, data in self._data['scan'].items()
         }
 
     def _parse_protocol(
@@ -67,7 +71,7 @@ class NmapDataParser:
         return results
 
     def _parse_os(self, data: object) -> dict[str, NmapOSData]:
-        results = None
+        results = {}
         if os_data := data.get('osmatch'):
             if first_os := os_data[0]:
                 os_name = first_os['name']
@@ -75,7 +79,7 @@ class NmapDataParser:
                 if len(os_class := first_os['osclass']) > 0:
                     if len(os_cpes := os_class[0].get('cpe')) > 0:
                         cpe = os_cpes[0]
-                os_data[os_name] = {
+                results[os_name] = {
                     'cpe': CPE.create_from_str(cpe),
                     'name': os_name
                 }
@@ -95,13 +99,14 @@ class PortScanner:
 
     def scan_ports(
             self,
+            host: str = "127.0.0.1",
             port_start: int = 0,
             port_end: int = 65355) -> ParsedNmapData:
         if self.host is None:
             raise ValueError("Host not set")
         return NmapDataParser(
             self.scanner.scan(
-                hosts="scanme.nmap.org",
+                hosts=host,
                 arguments='-sV -T4 --open -O',
                 ports=f'{port_start}-{port_end}'
             )
@@ -112,17 +117,18 @@ def main():
     scanner = PortScanner()
     scanner.set_host("")
 
-    scan_results: ParsedNmapData = scanner.scan_ports()
-    for key, data in scan_results.items():
-        if key in ['tcp', 'udp']:
-            for port, port_data in data[key].items():
-                cves = port_data['cve'].find_related_cves(results=100)
-                print(f"Port: {port}, CVEs:\n- " + "\n- ".join(
-                    str(cve) for cve in cves))
-        else:
-            cves = data['cve'].find_related_cves()
-            print(f"Port: {data['name']}, CVEs:\n- " + "\n- ".join(
-                    str(cve) for cve in cves))
+    scan_results: ParsedNmapData = scanner.scan_ports(port_end=1000)
+    for host_data in scan_results.values():
+        for key, data in host_data.items():
+            if key in ['tcp', 'udp']:
+                for port, port_data in data.items():
+                    cves = port_data['cpe'].find_related_cves(results=100)
+                    print(f"Port: {port}, CVEs:\n- " + "\n- ".join(
+                        str(cve) for cve in cves))
+            else:
+                cves = data['cpe'].find_related_cves()
+                print(f"Port: {data['name']}, CVEs:\n- " + "\n- ".join(
+                        str(cve) for cve in cves))
 
 
 if __name__ == "__main__":
