@@ -1,11 +1,14 @@
 import nmap
 
-def scan(tgtHost):
+def scan(tgtHost,port_range):
     # Initialize the Nmap PortScanner
     nm = nmap.PortScanner()
 
     # Perform the scan
-    nm.scan(hosts=tgtHost, arguments='-A')
+    if port_range is None:
+        nm.scan(hosts=tgtHost, arguments='-A')
+    else:
+        nm.scan(hosts=tgtHost, arguments=f"-p {port_range}")
 
     result = {
         'host': tgtHost,
