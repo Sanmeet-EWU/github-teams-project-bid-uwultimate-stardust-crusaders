@@ -22,6 +22,10 @@ class PortOptionsWidget(QWidget):
 
         target_layout = QHBoxLayout()
         target_input = QLineEdit()
+        range_input1= QLineEdit()
+        range_input2 = QLineEdit()
+        range_label = QLabel()
+        to_label = QLabel()
 
         # Dropdown Box
         service_combo = QComboBox()
@@ -30,9 +34,15 @@ class PortOptionsWidget(QWidget):
         service_combo.showEvent = lambda event: self.update_service_combo(service_combo)
         scan_ports_layout.addWidget(service_combo)
 
+        range_label.setText("Range:")
+        to_label.setText("to")
         target_input.setPlaceholderText("Target Machine")
         scan_host_button = QPushButton("Scan Host")
         target_layout.addWidget(target_input)
+        target_layout.addWidget(range_label)
+        target_layout.addWidget(range_input1)
+        target_layout.addWidget(to_label)
+        target_layout.addWidget(range_input2)
         target_layout.addWidget(scan_host_button)
         scan_ports_layout.addLayout(target_layout)
 
@@ -44,17 +54,18 @@ class PortOptionsWidget(QWidget):
 
 
         self.result_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        scan_host_button.clicked.connect(lambda: self.on_scan_host_clicked(service_combo, target_input))
+        scan_host_button.clicked.connect(lambda: self.on_scan_host_clicked(service_combo, target_input, range_input1, range_input2))
         scan_ports_layout.addWidget(self.result_table)
 
         self.layout.addLayout(scan_ports_layout)
 
-    def on_scan_host_clicked(self, service_combo, target_input):
+    def on_scan_host_clicked(self, service_combo, target_input, range_input1, range_input2):
         target_ip = target_input.text().strip()
+        port_range= range_input1.text()+"-"+range_input2.text()
         if not target_ip:
             target_ip = service_combo.currentText().strip()
         if target_ip:
-            results = scan(target_ip)
+            results = scan(target_ip,port_range)
             if results and results['ports']:
                 self.result_table.setRowCount(0)  # Clear previous results
                 for port_info in results['ports']:
