@@ -1,15 +1,17 @@
 import sys
+import random
 import networkx as nx
-from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip
-from PyQt6.QtCore import QRectF, QPointF, QTimer
-from PyQt6.QtGui import QBrush, QColor, QPen
-from Machine import *
+from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip, QGraphicsPixmapItem
+from PyQt6.QtCore import QRectF, QPointF, QTimer, Qt
+from PyQt6.QtGui import QBrush, QColor, QPen, QPixmap
+from machine import *
+from network_topology import *
 
 
 class GraphNode(QGraphicsEllipseItem):
 
     def __init__(self, machine, x, y):
-        super().__init__(QRectF(x - 55, y - 55, 110, 110))  # Center the ellipse on the coordinates
+        super().__init__(QRectF(x - 30, y - 30, 60, 60))  # Center the ellipse on the coordinates
         # Need to edit this to reflect the hover menu
         self.label = str(machine.IP)
         self.setBrush(QBrush(QColor(machine.color[0],machine.color[1],machine.color[2])))
@@ -17,15 +19,20 @@ class GraphNode(QGraphicsEllipseItem):
                         QGraphicsEllipseItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
         self.machine = machine
+        os_choice = random.choice(["../Images/windows.png", "../Images/tux.png"])
+        print(os_choice)
+        original_pixmap = QPixmap(str(os_choice))
+        scaled_pixmap = original_pixmap.scaled(30, 30, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
 
-        
+        # Add the scaled image over the node
+        self.image_item = QGraphicsPixmapItem(scaled_pixmap, self)
+        self.image_item.setPos(x - scaled_pixmap.width() / 2, y - scaled_pixmap.height() / 2)  # Center the image at (x, y)
     def hoverEnterEvent(self, event):
         ''' 
         Function to show label over node
         '''
         QToolTip.showText(event.screenPos(), self.label)
         super().hoverEnterEvent(event)
-
     def hoverLeaveEvent(self, event):
         '''
         Clean up function to remove label
@@ -62,9 +69,9 @@ class GraphWindow(QWidget):
     Automatic on page layout?
     '''
 
-    def __init__(self):
+    def __init__(self, network):
         super().__init__()
-
+        self.network = network
         # Layout setup
         layout = QVBoxLayout(self)
         self.graphicsView = QGraphicsView()
@@ -75,35 +82,36 @@ class GraphWindow(QWidget):
 
         # Displays the graph. Function takes the node.
         # Maybe the topology class should be passed in?
-        self.display_graph(10)
-
-    def display_graph(self, num_nodes):
-        ''' TODO
-        1. Incorporate machines in here.
-        2. do we need a get from the topology class
+    def display_graph(self):
         '''
-        # Mock array for machines.
+        Display the network graph using the machines from self.network.machines.
+        '''
+        # Get the list of machines from the network
+        machines = list(self.network.machines.values())
+        num_nodes = len(machines)
+        self.scene.clear()
+    
+        # Create a complete graph with the number of machines
         nxG = nx.complete_graph(num_nodes)
-        # Edit scale for spacing of buttons
-        pos = nx.spring_layout(nxG, scale=600)
-
-        # Create nodes and add to scene
+        # Adjust scale for spacing of nodes
+        pos = nx.spring_layout(nxG, scale=200)
+    
+        # Create edges and add to the scene
         for edge in nxG.edges:
             start_pos = QPointF(*pos[edge[0]])
             end_pos = QPointF(*pos[edge[1]])
             line = QGraphicsLineItem(start_pos.x(), start_pos.y(), end_pos.x(), end_pos.y())
             # Set edge color and thickness
-            line.setPen(QPen(QColor(50, 50, 50), 2))  
+            line.setPen(QPen(QColor(50, 50, 50), 2))
             self.scene.addItem(line)
-
-        for node in nxG.nodes:
+    
+        # Create nodes and add to the scene
+        for i, machine in enumerate(machines):
             # Get coordinates of the graph
-            x, y = pos[node]
-            # Need to add the machine in this constructor
-            machine = Machine(f"127.0.0.{node+1}")
-            node_item = GraphNode(machine, x, y)  
+            x, y = pos[i]
+            # Create a GraphNode for each machine
+            node_item = GraphNode(machine, x, y)
             self.scene.addItem(node_item)
-
 
 def main():
     app = QApplication(sys.argv)
