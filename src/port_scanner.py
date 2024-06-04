@@ -7,6 +7,7 @@ from typing import TypedDict
 import nmap
 
 from vulnerability_lookup.cpe import CPE
+from vulnerability_lookup.cve import CVE
 
 
 class PortState(Enum):
@@ -34,6 +35,13 @@ class ParsedNmapData(TypedDict):
     tcp: dict[int, NmapPortData]
     udp: dict[int, NmapPortData]
     os: NmapOSData | None
+
+
+class HostCveData(TypedDict):
+    identifier: str
+    type: str
+    cpe: CPE
+    cves: tuple[CVE, ...]
 
 
 class NmapDataParser:
@@ -71,7 +79,6 @@ class NmapDataParser:
         return results
 
     def _parse_os(self, data: object) -> dict[str, NmapOSData]:
-        results = {}
         if os_data := data.get('osmatch'):
             if first_os := os_data[0]:
                 os_name = first_os['name']
@@ -79,11 +86,11 @@ class NmapDataParser:
                 if len(os_class := first_os['osclass']) > 0:
                     if len(os_cpes := os_class[0].get('cpe')) > 0:
                         cpe = os_cpes[0]
-                results[os_name] = {
+                return {
                     'cpe': CPE.create_from_str(cpe),
                     'name': os_name
                 }
-        return results
+        return {}
 
 
 class PortScanner:
@@ -99,7 +106,7 @@ class PortScanner:
 
     def scan_ports(
             self,
-            host: str = "127.0.0.1",
+            host: str = "scanme.nmap.org",
             port_start: int = 0,
             port_end: int = 65355) -> ParsedNmapData:
         if self.host is None:
@@ -112,23 +119,46 @@ class PortScanner:
             )
         ).parse()
 
+    def get_cves_from_scan_data(
+            self,
+            data: ParsedNmapData,
+            max_cves_per_cpe: int = 10) -> tuple[HostCveData, ...]:
+        results: list[HostCveData] = []
+        for host_data in data.values():
+            for key, data in host_data.items():
+                if key in ['tcp', 'udp']:
+                    for port, port_data in data.items():
+                        if port_data.get('cpe'):
+                            results.append(
+                                {
+                                    'identifier': port,
+                                    'type': key,
+                                    'cpe': port_data['cpe'],
+                                    'cves': port_data['cpe'].find_related_cves(
+                                        max_cves=max_cves_per_cpe)
+                                }
+                            )
+                else:
+                    if data.get('cpe'):
+                        results.append(
+                            {
+                                'identifier': data['name'],
+                                'type': 'os',
+                                'cpe': data['cpe'],
+                                'cves': data['cpe'].find_related_cves(
+                                    max_cves=max_cves_per_cpe
+                                )
+                            }
+                        )
+        return tuple(results)
+
 
 def main():
     scanner = PortScanner()
     scanner.set_host("")
 
-    scan_results: ParsedNmapData = scanner.scan_ports(port_end=1000)
-    for host_data in scan_results.values():
-        for key, data in host_data.items():
-            if key in ['tcp', 'udp']:
-                for port, port_data in data.items():
-                    cves = port_data['cpe'].find_related_cves(results=100)
-                    print(f"Port: {port}, CVEs:\n- " + "\n- ".join(
-                        str(cve) for cve in cves))
-            else:
-                cves = data['cpe'].find_related_cves()
-                print(f"Port: {data['name']}, CVEs:\n- " + "\n- ".join(
-                        str(cve) for cve in cves))
+    scan_results: ParsedNmapData = scanner.scan_ports()
+    scanner.get_cves_from_scan_data(scan_results)
 
 
 if __name__ == "__main__":
