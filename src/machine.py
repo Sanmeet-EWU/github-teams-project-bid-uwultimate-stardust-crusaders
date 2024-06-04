@@ -1,17 +1,22 @@
 import ipaddress
-import random
+
+from port_scanner import ParsedNmapData
 
 class Machine:
-    def __init__(self, IP=None, OS=None):
+    """"""
+    scan_data: ParsedNmapData
+
+    def __init__(self, IP=None):
         self.IP = ipaddress.ip_address(IP) if IP else None
-        self.OS = OS
         self.vulnerabilities = []
         self.security_rating = 0
-        self.color = (99,36,177)        
-        self.random_color()
-    
+        self.color = (199, 36, 177)
+
     def add_vulnerability(self, vulnerability):
         self.vulnerabilities.append(vulnerability)
+
+    def attach_scan_data(self, data: ParsedNmapData):
+        """"""
 
     def generate_report(self) -> str:
         '''
@@ -19,9 +24,3 @@ class Machine:
         This will be called when you click on the map in network topology.
         '''
         return "This machine is vulnerable"
-
-    def random_color(self):
-        red = (255,0,0)
-        orange = (255,165,0)
-        green = (0,255,0)
-        self.color = random.choice([red,orange,green])

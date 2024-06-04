@@ -1,7 +1,97 @@
-import subprocess
+"""Module containing port scanning related classes and methods."""
+
 import re
-import json
-from datetime import datetime
+from enum import Enum, auto
+from typing import TypedDict
+
+import nmap
+
+from vulnerability_lookup.cpe import CPE
+from vulnerability_lookup.cve import CVE
+
+
+class PortState(Enum):
+    """Enum representing the state of a port."""
+    OPEN = 'open'
+    CLOSED = 'closed'
+    FILTERED = 'filtered'
+    UNKNOWN = auto()
+
+
+class NmapPortData(TypedDict):
+    """Type for parsed nmap data for individual ports."""
+    cpe: CPE | None
+    name: str
+    state: str
+
+
+class NmapOSData(TypedDict):
+    """Type for parsed nmap data for an OS."""
+    cpe: CPE | None
+    name: str
+
+
+class ParsedNmapData(TypedDict):
+    tcp: dict[int, NmapPortData]
+    udp: dict[int, NmapPortData]
+    os: NmapOSData | None
+
+
+class HostCveData(TypedDict):
+    identifier: str
+    type: str
+    cpe: CPE
+    cves: tuple[CVE, ...]
+
+
+class NmapDataParser:
+    def __init__(self, data: object):
+        self._data = data
+
+    def parse(self) -> dict[str, ParsedNmapData]:
+        return {
+            host:
+            {
+                'tcp': self._parse_protocol(data, 'tcp'),
+                'udp': self._parse_protocol(data, 'udp'),
+                'os': self._parse_os(data),
+            }
+            for host, data in self._data['scan'].items()
+        }
+
+    def _parse_protocol(
+            self,
+            data: object,
+            protocol: str) -> dict[int, NmapPortData]:
+        results = {}
+        if protocol_data := data.get(protocol):
+            for port, port_data in protocol_data.items():
+                results[int(port)] = {
+                    'cpe': CPE.create_from_str(port_data['cpe']),
+                    'name': port_data['name'],
+                    'state': (
+                        PortState(port_data['state']) if
+                        port_data['state'] in (
+                            state.value for state in PortState) else
+                        PortState.UNKNOWN
+                    )
+                }
+        return results
+
+    def _parse_os(self, data: object) -> dict[str, NmapOSData]:
+        if os_data := data.get('osmatch'):
+            if first_os := os_data[0]:
+                os_name = first_os['name']
+                cpe = ""
+                if len(os_class := first_os['osclass']) > 0:
+                    if len(os_cpes := os_class[0].get('cpe')) > 0:
+                        cpe = os_cpes[0]
+                return {
+                    'cpe': CPE.create_from_str(cpe),
+                    'name': os_name
+                }
+        return {}
+
 
 class PortScanner:
 
@@ -9,75 +99,66 @@ class PortScanner:
         self.host = None
         self.raw_output = None
         self.error_output = None
+        self.scanner = nmap.PortScanner()
 
     def set_host(self, host):
         self.host = host
 
-    def set_port_range(self, port_range=None):
-        if port_range is None:
-            return ""  # default to 1000 most common
-        elif re.match(r"all", port_range, re.IGNORECASE):
-            return "-p-"
-        else:
-            match = re.match(r"(\d+)\s*-\s*(\d+)", port_range)
-            if match:
-                start_port, end_port = map(int, match.groups())
-                if start_port < 1 or end_port > 65535 or start_port > end_port:
-                    raise ValueError("Invalid port range")
-                return f"-p {start_port}-{end_port}"
-            else:
-                raise ValueError("Invalid port range format")
-
-    def scan_ports(self, port_range=None):
+    def scan_ports(
+            self,
+            host: str = "scanme.nmap.org",
+            port_start: int = 0,
+            port_end: int = 65355) -> ParsedNmapData:
         if self.host is None:
             raise ValueError("Host not set")
+        return NmapDataParser(
+            self.scanner.scan(
+                hosts=host,
+                arguments='-sV -T4 --open -O',
+                ports=f'{port_start}-{port_end}'
+            )
+        ).parse()
 
-        port_option = self.set_port_range(port_range)
+    def get_cves_from_scan_data(
+            self,
+            data: ParsedNmapData,
+            max_cves_per_cpe: int = 10) -> tuple[HostCveData, ...]:
+        results: list[HostCveData] = []
+        for host_data in data.values():
+            for key, data in host_data.items():
+                if key in ['tcp', 'udp']:
+                    for port, port_data in data.items():
+                        if port_data.get('cpe'):
+                            results.append(
+                                {
+                                    'identifier': port,
+                                    'type': key,
+                                    'cpe': port_data['cpe'],
+                                    'cves': port_data['cpe'].find_related_cves(
+                                        max_cves=max_cves_per_cpe)
+                                }
+                            )
+                else:
+                    if data.get('cpe'):
+                        results.append(
+                            {
+                                'identifier': data['name'],
+                                'type': 'os',
+                                'cpe': data['cpe'],
+                                'cves': data['cpe'].find_related_cves(
+                                    max_cves=max_cves_per_cpe
+                                )
+                            }
+                        )
+        return tuple(results)
 
-        arguments = f"sudo nmap {self.host} {port_option} -sS -sU -A -O -sV --version-intensity 5 --osscan-guess -Pn"
-        print(f"Running command: {arguments}")
-
-        try:
-            completed_process = subprocess.run(arguments.split(), capture_output=True, text=True, check=True)
-            self.raw_output = completed_process.stdout
-            self.error_output = completed_process.stderr
-        except subprocess.CalledProcessError as e:
-            print(f"An error occurred during scanning: {e}")
-            self.raw_output = e.stdout
-            self.error_output = e.stderr
-
-        return self.raw_output
-
-    def save_scan_data(self):
-        file_name = f"nmap_scan_{self.host}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(file_name, 'w') as f:
-            f.write(self.raw_output)
-        print(f"Scan data saved to {file_name}")
-
-    def print_scan_data(self):
-        if self.raw_output:
-            print("Scan Results:")
-            print(json.dumps(self.raw_output.splitlines(), indent=4))
-            self.save_scan_data()
-        else:
-            print("No scan data available")
 
 def main():
     scanner = PortScanner()
-    scanner.set_host("127.0.0.1")
-    #demo main for testing purposes- hard coded for local host
-    #right now it prints the whole scan output. next thing is formatting & parsing it to make it look pretty and extract/save info for cve stuff
+    scanner.set_host("")
 
-    port_range = input("Enter port range (e.g., '1-100', 'all') or press Enter to scan the 1000 most common ports: ") or None
-
-    try:
-        scan_results = scanner.scan_ports(port_range)
-        if scan_results:
-            scanner.print_scan_data()
-        else:
-            print("No results found.")
-    except Exception as e:
-        print(f"An error occurred during scanning: {e}")
+    scan_results: ParsedNmapData = scanner.scan_ports()
+    scanner.get_cves_from_scan_data(scan_results)
 
 
 if __name__ == "__main__":
