@@ -46,10 +46,10 @@ class Machine:
         vulnerable_data: list[HostCveData] = []
         safe_data = []
         for data in self.cve_data:
-            if len(data['cves']) > 0:
-                vulnerable_data.append(data)
-            elif data['type'] == 'os':
+            if data['type'] == 'os':
                 os_data = data
+            elif len(data['cves']) > 0:
+                vulnerable_data.append(data)
             else:
                 safe_data.append(data)
         result_str = "Penetration Test Report\n"
@@ -90,4 +90,11 @@ class Machine:
             result_str += "No vulnerable services found!\n"
         self.security_rating = max_score
         self.set_color()
+        if os_data:
+            if 'linux' in os_data['identifier'].lower():
+                self.OS = 'linux'
+            elif 'windows' in os_data['identifier'].lower():
+                self.OS = 'windows'
+            elif 'mac' in os_data['identifier'].lower():
+                self.OS = 'mac'
         return "\n".join(wrap(result_str, width=240, replace_whitespace=False))
