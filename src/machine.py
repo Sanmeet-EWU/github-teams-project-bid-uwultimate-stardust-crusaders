@@ -9,7 +9,7 @@ class Machine:
     scan_data: ParsedNmapData
     cve_data: tuple[HostCveData, ...]
 
-    def __init__(self, IP=None):
+    def __init__(self, IP=None, OS=None):
         self.IP = ipaddress.ip_address(IP) if IP else None
         self.security_rating = 0
         self.color = (255, 255, 255)

@@ -6,9 +6,9 @@ def scan(tgtHost,port_range):
 
     # Perform the scan
     if port_range is None:
-        nm.scan(hosts=tgtHost, arguments='-A')
+        nm.scan(hosts=tgtHost, arguments='-sV -A')
     else:
-        nm.scan(hosts=tgtHost, arguments=f"-p {port_range}")
+        nm.scan(hosts=tgtHost, arguments=f"-p {port_range} -A -sV")
 
     result = {
         'host': tgtHost,
