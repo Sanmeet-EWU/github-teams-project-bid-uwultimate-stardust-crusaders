@@ -5,3 +5,5 @@ Requires-Dist: python-nmap==0.7.1
 Requires-Dist: pyqt6==6.7.0
 Requires-Dist: netifaces==0.11.0
 Requires-Dist: requests==2.31.0
+Requires-Dist: networkx
+Requires-Dist: matplotlib

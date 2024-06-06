@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLa
 from PyQt6.QtCore import Qt
 from ip_scanner import IPScanner
 from network_topology import *
-from temp_scanner import *
+from port_scanner import PortScanner
 
 
 class PortOptionsWidget(QWidget):
@@ -59,21 +59,31 @@ class PortOptionsWidget(QWidget):
 
         self.layout.addLayout(scan_ports_layout)
 
-    def on_scan_host_clicked(self, service_combo, target_input, range_input1, range_input2):
+    def on_scan_host_clicked(
+            self, service_combo, target_input, range_input1, range_input2):
         target_ip = target_input.text().strip()
-        port_range= range_input1.text()+"-"+range_input2.text()
         if not target_ip:
             target_ip = service_combo.currentText().strip()
         if target_ip:
-            results = scan(target_ip,port_range)
-            if results and results['ports']:
+            results = PortScanner().scan_ports(
+                target_ip,
+                int(range_input1.text()) if range_input1.text().isdigit() else 0, 
+                int(range_input2.text()) if range_input2.text().isdigit() else 65355)
+            self.network.machines[target_ip].attach_scan_data(results)
+            if results:
                 self.result_table.setRowCount(0)  # Clear previous results
-                for port_info in results['ports']:
+                for port, port_info in results[target_ip]['tcp'].items():
                     row_position = self.result_table.rowCount()
                     self.result_table.insertRow(row_position)
-                    self.result_table.setItem(row_position, 0, QTableWidgetItem(port_info['service']))
+                    self.result_table.setItem(row_position, 0, QTableWidgetItem(port_info['name']))
                     self.result_table.setItem(row_position, 1, QTableWidgetItem(port_info['version']))
-                    self.result_table.setItem(row_position, 2, QTableWidgetItem(str(port_info['port'])))
+                    self.result_table.setItem(row_position, 2, QTableWidgetItem(str(port)))
+                for port, port_info in results[target_ip]['udp'].items():
+                    row_position = self.result_table.rowCount()
+                    self.result_table.insertRow(row_position)
+                    self.result_table.setItem(row_position, 0, QTableWidgetItem(port_info['name']))
+                    self.result_table.setItem(row_position, 1, QTableWidgetItem(port_info['version']))
+                    self.result_table.setItem(row_position, 2, QTableWidgetItem(str(port)))
             else:
                 QMessageBox.warning(None, "Scan Error", "No open or filtered ports found.")
         else:

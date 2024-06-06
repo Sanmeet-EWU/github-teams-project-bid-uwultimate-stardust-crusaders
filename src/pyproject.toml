@@ -9,7 +9,9 @@ dependencies = [
     "python-nmap==0.7.1",
     "pyqt6==6.7.0",
     "netifaces==0.11.0",
-    "requests==2.31.0"
+    "requests==2.31.0",
+    "networkx",
+    "matplotlib"
 ]
 
 [tool.setuptools.packages.find]

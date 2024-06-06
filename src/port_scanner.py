@@ -22,6 +22,8 @@ class NmapPortData(TypedDict):
     """Type for parsed nmap data for individual ports."""
     cpe: CPE | None
     name: str
+    product: str
+    version: str
     state: str
 
 
@@ -69,6 +71,8 @@ class NmapDataParser:
                 results[int(port)] = {
                     'cpe': CPE.create_from_str(port_data['cpe']),
                     'name': port_data['name'],
+                    'product': port_data['product'],
+                    'version': port_data['version'],
                     'state': (
                         PortState(port_data['state']) if
                         port_data['state'] in (
@@ -109,12 +113,10 @@ class PortScanner:
             host: str = "scanme.nmap.org",
             port_start: int = 0,
             port_end: int = 65355) -> ParsedNmapData:
-        if self.host is None:
-            raise ValueError("Host not set")
         return NmapDataParser(
             self.scanner.scan(
                 hosts=host,
-                arguments='-sV -T4 --open -O',
+                arguments='-sV -T4 -O',
                 ports=f'{port_start}-{port_end}'
             )
         ).parse()

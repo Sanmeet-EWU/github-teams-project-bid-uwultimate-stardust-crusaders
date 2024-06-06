@@ -51,7 +51,6 @@ class GraphNode(QGraphicsEllipseItem):
         '''
         Might need some pretty edits temp code till I get the data types needed
         '''
-
         dialog = QDialog()
         dialog.setWindowTitle("Security Report")
         layout = QVBoxLayout()
