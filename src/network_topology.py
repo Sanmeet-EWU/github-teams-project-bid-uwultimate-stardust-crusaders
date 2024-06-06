@@ -11,12 +11,12 @@ class NetworkTopology:
         self.host = None
         self.local_ips = self.retrieve_local_ips()
 
-    def add_machine(self, IP, OS="Unknown"):
+    def add_machine(self, IP):
         try:
             ip = ipaddress.ip_address(IP)
 
             if str(ip) not in self.machines:
-                self.machines[str(ip)] = Machine(IP, OS)
+                self.machines[str(ip)] = Machine(IP)
                 if str(ip) in self.local_ips:
                     self.host = self.machines[str(ip)]
 
