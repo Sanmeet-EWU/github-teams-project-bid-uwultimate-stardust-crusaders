@@ -29,7 +29,7 @@ class WelcomePage(QWidget):
         start_button = QPushButton("Start")
         start_button.setMinimumSize(100, 50)
         start_button.setStyleSheet("""
-                    font-size: 18px;
+                    font-size: 20px;
                     font-weight: bold;
                     padding: 10px 20px;
                     border: 2px solid rgb(206, 41, 41);                   
