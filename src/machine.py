@@ -1,5 +1,5 @@
 import ipaddress
-
+from pen_tester import *
 from port_scanner import ParsedNmapData, PortScanner, HostCveData
 
 from textwrap import wrap
@@ -14,9 +14,20 @@ class Machine:
         self.security_rating = 0
         self.color = (255, 255, 255)
         self.cve_data = None
+        self.pentest = Pen_Tester()
+        self.scan_data = None
+        self.OS = "Unknown"
 
     def add_vulnerability(self, vulnerability):
         self.vulnerabilities.append(vulnerability)
+    
+    def set_color(self):
+        if self.security_rating <= 3:
+            self.color = (0, 255, 0)  # Green
+        elif 4 <= self.security_rating <= 7:
+            self.color = (255, 165, 0)  # Orange
+        else:
+            self.color = (255, 0, 0)  # Red
 
     def attach_scan_data(self, data: ParsedNmapData):
         """Attach scan data."""
@@ -41,8 +52,15 @@ class Machine:
                 os_data = data
             else:
                 safe_data.append(data)
-        result_str = ""
+        result_str = "Penetration Test Report\n"
+        result_str += ("-" * 240) + "\n"
         max_score = 0
+        pen_report = self.pentest.run_exploits(self)
+        if not pen_report:
+            result_str += "No Exploits where Successful\n"
+        else:
+            result_str += pen_report
+            max_score = 10
         # OS
         result_str += ("-" * 240) + "\n"
         if os_data:
@@ -70,5 +88,6 @@ class Machine:
                     max_score = max(max_score, cve.metrics.base_score)
         else:
             result_str += "No vulnerable services found!\n"
-        self.color = (255 * (max_score / 10), 0, 255)
+        self.security_rating = max_score
+        self.set_color()
         return "\n".join(wrap(result_str, width=240, replace_whitespace=False))

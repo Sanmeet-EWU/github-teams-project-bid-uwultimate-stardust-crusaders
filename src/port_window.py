@@ -48,7 +48,7 @@ class PortOptionsWidget(QWidget):
 
         # Results Table
         self.result_table = QTableWidget()
-        self.result_table.setRowCount(4)
+        self.result_table.setRowCount(0)
         self.result_table.setColumnCount(3)
         self.result_table.setHorizontalHeaderLabels(["Service", "Version", "Port"])
 

@@ -1,5 +1,5 @@
 import ftplib
-from Machine import *
+from machine import *
 
 class Pen_Tester:
     
@@ -8,24 +8,18 @@ class Pen_Tester:
     
 
     def run_exploits(self,machine):
-
+        report = ""
         for exploit in self.exploits:
             result = exploit(machine.IP)
-        return result        
+            if result is not None:
+                report += result
+        return report 
 
     def login_to_ftp(self,host):
         try:
             with ftplib.FTP(str(host)) as ftp:
-                print("IM TRYING TO LOG IN")
                 ftp.login()  
-                print("YOU HAVE BEEN HACKED!")
-                return True
+                return "Anonymous FTP Login Enabled\n"
         except ftplib.all_errors as e:
-            print(f"Failed to connect or login: {e}")
-            return False
+            return None
 
-# Test for demo purposes:
-my_machine =  Machine("10.211.55.10","Linux")
-pentester =  Pen_Tester()  # Replace with the FTP server's address
-result = pentester.run_exploits(my_machine)
-print(result)

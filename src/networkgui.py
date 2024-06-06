@@ -1,7 +1,7 @@
 import sys
 import random
 import networkx as nx
-from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip, QGraphicsPixmapItem
+from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QLabel, QGraphicsScene, QGraphicsView, QVBoxLayout, QWidget, QGraphicsEllipseItem, QGraphicsLineItem, QToolTip, QGraphicsPixmapItem, QDialog, QScrollArea
 from PyQt6.QtCore import QRectF, QPointF, QTimer, Qt
 from PyQt6.QtGui import QBrush, QColor, QPen, QPixmap
 from machine import *
@@ -19,8 +19,15 @@ class GraphNode(QGraphicsEllipseItem):
                         QGraphicsEllipseItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
         self.machine = machine
-        os_choice = random.choice(["../Images/windows.png", "../Images/tux.png"])
-        print(os_choice)
+        if "window" in self.machine.OS:
+            os_choice = "../Images/windows.png"
+        elif "linux" in self.machine.OS:
+            os_choice = "../Images/tux.png"
+        elif "mac" in self.machine.OS:
+            os_choice = "../Images/mac.png"
+        else:
+            os_choice = "../Images/unknown.png"
+
         original_pixmap = QPixmap(str(os_choice))
         scaled_pixmap = original_pixmap.scaled(30, 30, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
 
@@ -53,12 +60,22 @@ class GraphNode(QGraphicsEllipseItem):
         '''
         dialog = QDialog()
         dialog.setWindowTitle("Security Report")
+        
         layout = QVBoxLayout()
+        
         report = self.machine.generate_report()
+        
         report_label = QLabel(report)
-        layout.addWidget(report_label)
+        report_label.setWordWrap(True)  
+        
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(report_label)
+        
+        layout.addWidget(scroll_area)
+        
         dialog.setLayout(layout)
-        dialog.resize(400, 300)
+        dialog.showFullScreen()
         dialog.exec()
 
 class GraphWindow(QWidget):
