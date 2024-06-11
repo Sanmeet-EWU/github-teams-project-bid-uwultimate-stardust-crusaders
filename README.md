@@ -16,6 +16,14 @@ Run `sudo python3 main.py` in the src folder.
 
 Please notate this is for mac. If on Windows please run as administrator.
 
+## Testing
+
+We were unable to get the docker orchestration to work and write test to run with this. 
+
+## File Structure
+
+Other than src each file structure holds work for assignments that may or may not be completed. This was used as a file sharing system to colloborate on power points and other deliverable items
+
 ## Gui  
 
 Usage of the gui takes you to three windows.
