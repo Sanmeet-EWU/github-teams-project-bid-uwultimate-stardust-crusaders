@@ -6,7 +6,7 @@ The source code for this is located under the src file.
 
 A docker-compose orchestration with instructions for a testing environment is under Eric section called Test_Environment.zip
 
-## Useage
+## Usage
 
 Please download the neccesary files with the pipfile folder.
 
