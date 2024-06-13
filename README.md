@@ -48,4 +48,13 @@ Alexa Darrington
 Dennis Vinnikov  
 Lewis Thomas
 
+### Environment Setup (Recommended)
 
+1. Ensure python 3.9+ is installed and install pipenv. Ex. py -m pip install pipenv
+2. Clone this repository, navigate to the src folder and create a new developer virtual environment. Ex. pipenv install --dev
+      2.1. If the above step fails, ensure that your python binary is set as an environment variable in your PATH, for more info see: https://realpython.com/add-python-to-path/
+3. Reload your IDE or text editor and ensure that your virtual environment is set.
+      3.1. For example, in VS Code see: https://code.visualstudio.com/docs/python/environments for more information on how to set your environment.
+      3.2. For help with other IDEs and text editors, look up how to set your virtual environment on your search engine of choice.
+      3.3 Alternatively, run the command "pipenv shell" and then run main.py through terminal as you would regularly. Ex. python ./main.py
+4. If any alternative issues are encountered, feel free to reach out at wreese1@ewu.edu for help troubleshooting.
